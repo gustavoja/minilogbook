@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
@@ -34,14 +33,14 @@ import com.gjapps.minilogbook.ui.theme.MiniLogbookTheme
 @Composable
 fun BloodGlucoseRecordsMenu(inputValue:String, selectedFilter: BloodGlucoseUnit, onSave: () -> Unit, onInputValueChanged: (String) -> Unit, onFilterChanged: (BloodGlucoseUnit) -> Unit,
                             innerPadding: PaddingValues,
-                            expandedOnAppear: Boolean = true, modifier: Modifier = Modifier)
+                            modifier: Modifier = Modifier,
+                            expandedOnAppear: Boolean = true)
 {
     val inputLabel = if (selectedFilter == BloodGlucoseUnit.Mgdl) stringResource(R.string.mg_dl) else stringResource(
         R.string.mmol_l)
 
-    val icon = if (inputValue.isNullOrEmpty()) Icons.Filled.KeyboardArrowUp else Icons.Filled.KeyboardArrowDown
     var addMenuVisible by remember { mutableStateOf(expandedOnAppear) }
-    var iconRotation = animateFloatAsState(if(addMenuVisible) 180f else 0f)
+    val iconRotation by animateFloatAsState(if(addMenuVisible) 180f else 0f, label = "Blood glucose Menu visibility animation")
 
     Card(modifier = modifier.fillMaxWidth(),shape = RoundedCornerShape(16.dp,16.dp)) {
         Column(Modifier.fillMaxWidth().padding(bottom = innerPadding.calculateBottomPadding() + 30.dp, top = 10.dp, start = 20.dp, end = 20.dp),horizontalAlignment = Alignment.CenterHorizontally) {
@@ -49,9 +48,9 @@ fun BloodGlucoseRecordsMenu(inputValue:String, selectedFilter: BloodGlucoseUnit,
                 onClick = {
                     addMenuVisible = !addMenuVisible
                 },
-                modifier = Modifier.padding(bottom = 10.dp).rotate(iconRotation.value).align(Alignment.CenterHorizontally)
+                modifier = Modifier.padding(bottom = 10.dp).rotate(iconRotation).align(Alignment.CenterHorizontally)
             ) {
-                Icon(imageVector = icon, stringResource(R.string.more_options), Modifier.size(30.dp))
+                Icon(imageVector = Icons.Filled.KeyboardArrowUp , stringResource(R.string.more_options), Modifier.size(30.dp))
             }
 
             BloodGlucoseUnitHorizontalSelector(selectedFilter, onFilterChanged)
@@ -74,7 +73,7 @@ fun AddBloodGlucoseRecordComponentPreview(){
     MiniLogbookTheme {
         Surface {
             BloodGlucoseRecordsMenu("", BloodGlucoseUnit.Mgdl, {}, {}, {},
-                PaddingValues(0.dp),true, Modifier
+                PaddingValues(0.dp),Modifier,true
             )
         }
     }

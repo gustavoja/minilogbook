@@ -30,7 +30,9 @@ fun BloodGlucoseUnitHorizontalSelector(
     selectedFilter: BloodGlucoseUnit,
     onFilterChanged: (BloodGlucoseUnit) -> Unit
 ) {
-    val animatedOffset = animateFloatAsState(targetValue = if (selectedFilter == BloodGlucoseUnit.Mgdl) 0f else .5f)
+    val animatedOffset = animateFloatAsState(targetValue = if (selectedFilter == BloodGlucoseUnit.Mgdl) 0f else .5f,
+        label = "Blood glucose horizontal selector animation"
+    )
     val interactionSource = remember { MutableInteractionSource() }
 
     Box(
@@ -99,7 +101,7 @@ fun BloodGlucoseUnitHorizontalSelector(
 fun BloodGlucoseUnitHorizontalSelectorPreview(){
     MiniLogbookTheme {
         Surface {
-            BloodGlucoseUnitHorizontalSelector(BloodGlucoseUnit.Mgdl , {})
+            BloodGlucoseUnitHorizontalSelector(BloodGlucoseUnit.Mgdl) {}
         }
     }
 }

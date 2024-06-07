@@ -28,9 +28,9 @@ fun ValueInput(
     label:String,
     onInputValueChanged: (String) -> Unit,
     onSave: () -> Unit,
+    modifier: Modifier = Modifier,
     icon : ImageVector = Icons.Filled.Add,
-    iconDescription: String = stringResource(R.string.add_blood_sugar_record),
-    modifier: Modifier = Modifier
+    iconDescription: String = stringResource(R.string.add_blood_sugar_record)
 ) {
     Row(
         modifier.fillMaxWidth().padding(0.dp),
@@ -50,7 +50,7 @@ fun ValueInput(
         )
         IconButton(
             modifier = Modifier.padding(start = 10.dp),
-            enabled = !inputValue.isNullOrEmpty(),
+            enabled = inputValue.isNotEmpty(),
             onClick = { onSave.invoke() }
         ) {
             Icon(imageVector = icon, iconDescription)

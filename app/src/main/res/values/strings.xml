@@ -4,4 +4,6 @@
     <string name="mmol_l">mmol/L</string>
     <string name="add_blood_sugar_record">Add blood sugar record</string>
     <string name="more_options">more options</string>
+    <string name="your_average_is">Your average is %s %s</string>
+    <string name="emoty_blood_glucose_records">No blood glucose records added yet. Start tracking your blood glucose average by adding new entries below.</string>
 </resources>

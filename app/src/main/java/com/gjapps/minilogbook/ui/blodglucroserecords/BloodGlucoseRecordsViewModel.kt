@@ -12,26 +12,26 @@ import javax.inject.Inject
 @HiltViewModel
 class BloodGlucoseRecordsViewModel @Inject constructor(private val sanitizeDecimalNumberUseCase: SanitizeDecimalNumberUseCase) : ViewModel() {
     private val _uiState: MutableStateFlow<BloodGlucoseRecordsUiState> = MutableStateFlow(
-        BloodGlucoseRecordsUiState.Records("", BloodGlucoseUnit.Mgdl, emptyList())
+        BloodGlucoseRecordsUiState("", "", BloodGlucoseUnit.Mgdl, records =  RecordsState.Empty)
     )
     val uiState = _uiState.asStateFlow()
 
     fun onRecordValueChanged(newValue: String) {
-        val currentValue = (_uiState.value as BloodGlucoseRecordsUiState.Records).inputValue
+        val currentValue = _uiState.value.newRecordInputValue
         _uiState.update {
-            (it as BloodGlucoseRecordsUiState.Records).copy(inputValue = sanitizeDecimalNumberUseCase(currentValue, newValue))
+            it.copy(newRecordInputValue = sanitizeDecimalNumberUseCase(currentValue, newValue))
         }
     }
 
     fun onFilterChanged(selected: BloodGlucoseUnit) {
         _uiState.update {
-            (it as BloodGlucoseRecordsUiState.Records).copy(selectedUnit = selected)
+            it.copy(selectedUnit = selected)
         }
     }
 
     fun onSaveRecordValue() {
         _uiState.update {
-            (it as BloodGlucoseRecordsUiState.Records).copy(inputValue = "")
+            it.copy(newRecordInputValue = "", records = RecordsState.WithRecords(listOf(it.newRecordInputValue)))
         }
     }
 }
