@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Mini Bitácora</string>
+    <string name="mg_dl">mg/dL</string>
+    <string name="mmol_l">mmol/L</string>
+    <string name="add_blood_sugar_record">Agregar registro de azúcar en sangre</string>
+    <string name="more_options">más opciones</string>
+    <string name="your_average_is">Tu promedio es %s %s</string>
+    <string name="empty_blood_glucose_records">Aún no se han agregado registros de glucosa en sangre.\nComienza a rastrear tu promedio de glucosa en sangre agregando nuevas entradas en el menú inferior.</string>
+    <string name="blood_glucose_records">Registros de glucosa en sangre</string>
+    <string name="something_went_wrong_while_loading_your_records">Algo salió mal al cargar tus registros</string>
+</resources>

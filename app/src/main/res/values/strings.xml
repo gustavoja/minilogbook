@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Mini Logbook</string>
     <string name="mg_dl">mg/dL</string>
@@ -5,6 +6,7 @@
     <string name="add_blood_sugar_record">Add blood sugar record</string>
     <string name="more_options">more options</string>
     <string name="your_average_is">Your average is %s %s</string>
-    <string name="emoty_blood_glucose_records">No blood glucose records added yet.\nStart tracking your blood glucose average by adding new entries below.</string>
+    <string name="empty_blood_glucose_records">No blood glucose records added yet.\nStart tracking your blood glucose average by adding new entries below.</string>
     <string name="blood_glucose_records">Blood glucose records</string>
+    <string name="something_went_wrong_while_loading_your_records">Something went wrong while loading your records</string>
 </resources>

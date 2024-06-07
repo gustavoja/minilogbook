@@ -16,12 +16,12 @@ import com.gjapps.minilogbook.R
 import com.gjapps.minilogbook.ui.theme.MiniLogbookTheme
 
 @Composable
-fun RecordListEmptyState(modifier: Modifier = Modifier) {
+fun BloodGlucoseRecordsListMessage(message: String, modifier: Modifier = Modifier) {
     Box(modifier = modifier
         .fillMaxSize()
         .padding(20.dp))
     {
-        Text(text = stringResource(R.string.emoty_blood_glucose_records),
+        Text(text = message,
             textAlign = TextAlign.Center,
             modifier = Modifier.align(Alignment.Center))
     }
@@ -29,10 +29,10 @@ fun RecordListEmptyState(modifier: Modifier = Modifier) {
 
 @Composable
 @Preview
-fun RecordListEmptyStatePreview(){
+fun BloodRecordsListMessagePreview(){
     MiniLogbookTheme {
         Surface {
-            RecordListEmptyState()
+            BloodGlucoseRecordsListMessage(stringResource(R.string.empty_blood_glucose_records))
         }
     }
 }

@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -17,8 +18,10 @@ import com.gjapps.minilogbook.R
 import com.gjapps.minilogbook.data.models.BloodGlucoseUnit
 import com.gjapps.minilogbook.ui.blodglucroserecords.components.average.BloodGlucoseTopBar
 import com.gjapps.minilogbook.ui.blodglucroserecords.components.menu.BloodGlucoseRecordsMenu
-import com.gjapps.minilogbook.ui.blodglucroserecords.components.recordslist.RecordListEmptyState
-import com.gjapps.minilogbook.ui.blodglucroserecords.components.recordslist.RecordsList
+import com.gjapps.minilogbook.ui.blodglucroserecords.components.recordslist.BloodGlucoseRecordsListMessage
+import com.gjapps.minilogbook.ui.blodglucroserecords.components.recordslist.uistates.BloodGlucoseRecordItemUIState
+import com.gjapps.minilogbook.ui.blodglucroserecords.components.recordslist.BloodGlucoseRecordsList
+import com.gjapps.minilogbook.ui.blodglucroserecords.components.recordslist.uistates.BloodGlucoseRecordsListUIState
 import com.gjapps.minilogbook.ui.theme.MiniLogbookTheme
 
 
@@ -28,6 +31,10 @@ fun BloodGlucoseRecordsScreen(
     viewModel: BloodGlucoseRecordsViewModel = hiltViewModel()
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle(lifecycleOwner = androidx.compose.ui.platform.LocalLifecycleOwner.current)
+
+    LaunchedEffect(Unit) {
+        viewModel.onLoaded()
+    }
     BloodGlucoseRecordsScreen(state, viewModel::onFilterChanged, viewModel::onRecordValueChanged, viewModel::onSaveRecordValue,modifier)
 }
 
@@ -51,11 +58,14 @@ fun BloodGlucoseRecordsScreen(
             BloodGlucoseTopBar(state.average, selectedUnitName,innerPadding, Modifier.align(Alignment.CenterHorizontally))
 
             when (state.recordsState) {
-                RecordsState.Empty -> {
-                    RecordListEmptyState(Modifier.weight(1f))
+                BloodGlucoseRecordsListUIState.Empty -> {
+                    BloodGlucoseRecordsListMessage(stringResource(id = R.string.empty_blood_glucose_records),Modifier.weight(1f))
                 }
-                is RecordsState.WithRecords -> {
-                    RecordsList(state.recordsState.records,Modifier.weight(1f))
+                is BloodGlucoseRecordsListUIState.WithBloodGlucoseRecords -> {
+                    BloodGlucoseRecordsList(state.recordsState.records, selectedUnitName, Modifier.weight(1f))
+                }
+                BloodGlucoseRecordsListUIState.Error -> {
+                    BloodGlucoseRecordsListMessage(stringResource(R.string.something_went_wrong_while_loading_your_records),Modifier.weight(1f))
                 }
             }
 
@@ -67,7 +77,7 @@ fun BloodGlucoseRecordsScreen(
                 onInputValueChanged = onInputValueChanged,
                 onFilterChanged = onFilterChanged,
                 innerPadding = innerPadding,
-                expandedOnAppear = state.recordsState !is RecordsState.WithRecords,
+                expandedOnAppear = state.recordsState !is BloodGlucoseRecordsListUIState.WithBloodGlucoseRecords,
                 modifier = Modifier
             )
         }
@@ -91,7 +101,9 @@ fun BloodGlucoseRecordsWithRecordsScreenPreview(){
     MiniLogbookTheme {
         Surface {
             BloodGlucoseRecordsScreen(state = BloodGlucoseRecordsUiState("150","mmol/L",
-                BloodGlucoseUnit.Mmoldl,recordsState = RecordsState.WithRecords(listOf("record"))), {}, {}, {}, Modifier)
+                BloodGlucoseUnit.Mmoldl,recordsState = BloodGlucoseRecordsListUIState.WithBloodGlucoseRecords(listOf(
+                    BloodGlucoseRecordItemUIState("150.5","12/12/24",)
+                ))), {}, {}, {}, Modifier)
         }
     }
 }
