@@ -4,6 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.gjapps.minilogbook.data.models.BloodGlucoseUnit
 import com.gjapps.minilogbook.data.repositories.BloodGlucoseRepository
+import com.gjapps.minilogbook.domain.usecases.ConverMgDlToMmollUseCase
+import com.gjapps.minilogbook.domain.usecases.ConverMmollToMgDlUseCase
 import com.gjapps.minilogbook.domain.usecases.ConvertFloatToLocaleDecimalStringUseCase
 import com.gjapps.minilogbook.domain.usecases.ConvertLocaleDecimalStringFloatUseCase
 import com.gjapps.minilogbook.domain.usecases.DateToLocaleStringFormatUseCase
@@ -27,8 +29,11 @@ class BloodGlucoseRecordsViewModel @Inject constructor(private val bloodGlucoseR
                                                        private val sanitizeDecimalNumberUseCase: SanitizeDecimalNumberUseCase,
                                                        private val dateToLocaleStringFormatUseCase: DateToLocaleStringFormatUseCase,
                                                        private val convertLocaleDecimalStringFloatUseCase: ConvertLocaleDecimalStringFloatUseCase,
-                                                       private val convertFloatToLocaleDecimalStringUseCase: ConvertFloatToLocaleDecimalStringUseCase
-) : ViewModel() {
+                                                       private val convertFloatToLocaleDecimalStringUseCase: ConvertFloatToLocaleDecimalStringUseCase,
+                                                       private val convertMmollToMgDlUseCase: ConverMmollToMgDlUseCase,
+                                                       private val converMgDlToMmollUseCase: ConverMgDlToMmollUseCase,
+
+                                                       ) : ViewModel() {
     private val _uiState: MutableStateFlow<BloodGlucoseRecordsUiState> = MutableStateFlow(
         BloodGlucoseRecordsUiState("", "", BloodGlucoseUnit.Mgdl, recordsState =  BloodGlucoseRecordsListUIState.Empty)
     )
@@ -37,7 +42,11 @@ class BloodGlucoseRecordsViewModel @Inject constructor(private val bloodGlucoseR
     private val bloodGlucoseRecordsListUiState = bloodGlucoseRecordsRepository
         .bloodGlucoseRecords
         .map{
-            val recordsUIStates = it.map { record -> BloodGlucoseRecordItemUIState(convertFloatToLocaleDecimalStringUseCase(record.value), dateToLocaleStringFormatUseCase(record.date)) }
+            val recordsUIStates = it.map { record -> BloodGlucoseRecordItemUIState(
+                convertFloatToLocaleDecimalStringUseCase(
+                    if(uiState.value.selectedUnit ==  BloodGlucoseUnit.Mgdl) record.mgdlValue else converMgDlToMmollUseCase(record.mgdlValue)
+                ),
+                dateToLocaleStringFormatUseCase(record.date)) }
             if(it.any()) BloodGlucoseRecordsListUIState.WithBloodGlucoseRecords(recordsUIStates) else BloodGlucoseRecordsListUIState.Empty
         }
         .catch {
@@ -62,6 +71,8 @@ class BloodGlucoseRecordsViewModel @Inject constructor(private val bloodGlucoseR
         _uiState.update {
             it.copy(selectedUnit = selected)
         }
+
+        reloadRecords()
     }
 
     fun onSaveRecordValue() {
@@ -86,13 +97,25 @@ class BloodGlucoseRecordsViewModel @Inject constructor(private val bloodGlucoseR
         }
     }
 
+    private fun reloadRecords() {
+        viewModelScope.launch(CoroutineExceptionHandler { _, exception ->
+            _uiState.update {
+                it.copy(recordsState = BloodGlucoseRecordsListUIState.Error)
+            }
+        }) {
+            bloodGlucoseRecordsRepository.reloadBloodGlucoseRecords()
+        }
+    }
+
     private fun addRecord(value: String){
         viewModelScope.launch (CoroutineExceptionHandler{ _, exception ->
             _uiState.update {
                 it.copy(recordsState = BloodGlucoseRecordsListUIState.Error)
             }
         }) {
-            bloodGlucoseRecordsRepository.saveRecord(convertLocaleDecimalStringFloatUseCase(value))
+            var convertedValue = convertLocaleDecimalStringFloatUseCase(value)
+            convertedValue = if(uiState.value.selectedUnit ==  BloodGlucoseUnit.Mgdl) convertedValue else convertMmollToMgDlUseCase(convertedValue)
+            bloodGlucoseRecordsRepository.saveRecord(convertedValue)
         }
     }
 }

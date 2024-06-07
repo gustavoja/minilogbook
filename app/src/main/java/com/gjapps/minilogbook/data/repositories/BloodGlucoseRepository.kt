@@ -11,16 +11,22 @@ import javax.inject.Inject
 
 interface BloodGlucoseRepository {
     val bloodGlucoseRecords: Flow<List<BloodGlucoseRecordModel>>
-    suspend fun saveRecord(value: Float)
+    suspend fun saveRecord(mgdlValue: Float)
+
+    suspend fun reloadBloodGlucoseRecords()
 }
 
 class BloodGlucoseRepositoryImpl @Inject constructor(private val storageDataSource: StorageDataSource): BloodGlucoseRepository {
     override val bloodGlucoseRecords: Flow<List<BloodGlucoseRecordModel>> =
-        storageDataSource.getRecords()
+        storageDataSource.bloodGlucoseRecords
             .map { it.sortedByDescending { it.date }.map { it.copy(date = it.date.fromUTC()) } }
 
-    override suspend fun saveRecord(value: Float) {
-        val record = BloodGlucoseRecordModel(value,Date().toUTC())
+    override suspend fun saveRecord(mgdlValue: Float) {
+        val record = BloodGlucoseRecordModel(mgdlValue,Date().toUTC())
         storageDataSource.saveRecord(record)
+    }
+
+    override suspend fun reloadBloodGlucoseRecords() {
+        storageDataSource.reloadBloodGlucoseRecords()
     }
 }

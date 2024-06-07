@@ -1,5 +1,9 @@
 package com.gjapps.minilogbook.domain.di
 
+import com.gjapps.minilogbook.domain.usecases.ConverMgDlToMmollUseCase
+import com.gjapps.minilogbook.domain.usecases.ConverMgDlToMmollUseCaseImpl
+import com.gjapps.minilogbook.domain.usecases.ConverMmollToMgDlUseCase
+import com.gjapps.minilogbook.domain.usecases.ConverMmollToMgDlUseCaseImpl
 import com.gjapps.minilogbook.domain.usecases.ConvertFloatToLocaleDecimalStringUseCase
 import com.gjapps.minilogbook.domain.usecases.ConvertFloatToLocaleDecimalStringUseCaseImpl
 import com.gjapps.minilogbook.domain.usecases.ConvertLocaleDecimalStringFloatUseCase
@@ -40,4 +44,17 @@ object UseCasesModule {
     fun providesConvertFloatToLocaleDecimalStringUseCase() : ConvertFloatToLocaleDecimalStringUseCase {
         return ConvertFloatToLocaleDecimalStringUseCaseImpl()
     }
+
+    @ViewModelScoped
+    @Provides
+    fun providesConvertMmollToMgDlUseCase() : ConverMmollToMgDlUseCase {
+        return ConverMmollToMgDlUseCaseImpl()
+    }
+
+    @ViewModelScoped
+    @Provides
+    fun providesConverMgDlToMmollUseCase() : ConverMgDlToMmollUseCase {
+        return ConverMgDlToMmollUseCaseImpl()
+    }
+
 }
