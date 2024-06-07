@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Mini Logbook</string>
+    <string name="mg_dl">mg/dL</string>
+    <string name="mmol_l">mmol/L</string>
+    <string name="add_blood_sugar_record">Add blood sugar record</string>
+    <string name="more_options">more options</string>
+</resources>
