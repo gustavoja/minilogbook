@@ -12,7 +12,7 @@ import javax.inject.Inject
 @HiltViewModel
 class BloodGlucoseRecordsViewModel @Inject constructor(private val sanitizeDecimalNumberUseCase: SanitizeDecimalNumberUseCase) : ViewModel() {
     private val _uiState: MutableStateFlow<BloodGlucoseRecordsUiState> = MutableStateFlow(
-        BloodGlucoseRecordsUiState("", "", BloodGlucoseUnit.Mgdl, records =  RecordsState.Empty)
+        BloodGlucoseRecordsUiState("", "", BloodGlucoseUnit.Mgdl, recordsState =  RecordsState.Empty)
     )
     val uiState = _uiState.asStateFlow()
 
@@ -31,7 +31,7 @@ class BloodGlucoseRecordsViewModel @Inject constructor(private val sanitizeDecim
 
     fun onSaveRecordValue() {
         _uiState.update {
-            it.copy(newRecordInputValue = "", records = RecordsState.WithRecords(listOf(it.newRecordInputValue)))
+            it.copy(newRecordInputValue = "", average = "", recordsState = RecordsState.WithRecords(listOf(it.newRecordInputValue)))
         }
     }
 }

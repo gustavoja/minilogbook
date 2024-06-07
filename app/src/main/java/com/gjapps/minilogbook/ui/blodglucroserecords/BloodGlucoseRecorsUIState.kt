@@ -7,7 +7,7 @@ data class BloodGlucoseRecordsUiState (
     val newRecordInputValue:String,
     val selectedUnit: BloodGlucoseUnit,
     val loading : Boolean = false,
-    val records : RecordsState = RecordsState.Empty
+    val recordsState : RecordsState = RecordsState.Empty
 )
 
 sealed interface RecordsState {

@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.material3.ElevatedSuggestionChip
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.SuggestionChipDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -54,7 +55,8 @@ fun BloodGlucoseUnitHorizontalSelector(
             ElevatedSuggestionChip(
                 onClick = {},
                 label = {},
-                Modifier
+                colors =  SuggestionChipDefaults.suggestionChipColors().copy(MaterialTheme.colorScheme.onTertiary),
+                modifier = Modifier
                     .fillMaxWidth(.1f)
                     .weight(1f)
                     .fillMaxHeight(),
