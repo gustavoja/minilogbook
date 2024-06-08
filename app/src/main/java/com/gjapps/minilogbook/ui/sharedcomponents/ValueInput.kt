@@ -47,7 +47,7 @@ fun ValueInput(
             onValueChange = onInputValueChanged,
             keyboardOptions = KeyboardOptions.Default.copy(
                 keyboardType = KeyboardType.Decimal,
-                imeAction = ImeAction.Done,
+                imeAction = ImeAction.Next,
             ),
             label = { Text(label) },
             modifier = Modifier
@@ -55,9 +55,12 @@ fun ValueInput(
                 .fillMaxWidth(),
             maxLines = 1,
             keyboardActions = KeyboardActions(
-                onDone = {
+                onNext = {
                     if(isValidValue) {
                         onSave.invoke()
+                    }
+                    else
+                    {
                         keyboardController?.hide()
                     }
                 }
@@ -67,8 +70,10 @@ fun ValueInput(
             modifier = Modifier.padding(start = 10.dp),
             enabled = isValidValue,
             onClick = {
-                if(isValidValue)
+                if(isValidValue) {
                     onSave.invoke()
+                    keyboardController?.hide()
+                }
             }
         ) {
             Icon(imageVector = icon, iconDescription)
