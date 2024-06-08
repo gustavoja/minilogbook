@@ -4,6 +4,7 @@ import java.text.DecimalFormatSymbols
 
 interface SanitizeDecimalNumberUseCase {
     operator fun invoke(currentValue:String,newValue: String): String
+    fun getDecimalSeparatorForCurrentLocale(): Char
 }
 
 class SanitizeDecimalNumberUseCaseImpl : SanitizeDecimalNumberUseCase {
@@ -20,7 +21,7 @@ class SanitizeDecimalNumberUseCaseImpl : SanitizeDecimalNumberUseCase {
         return input.filter { it.isDigit() || it == decimalSeparator}
     }
 
-    fun getDecimalSeparatorForCurrentLocale(): Char {
+    override fun getDecimalSeparatorForCurrentLocale(): Char {
         val symbols = DecimalFormatSymbols.getInstance()
         return symbols.decimalSeparator
     }

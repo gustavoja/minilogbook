@@ -29,6 +29,7 @@ import com.gjapps.minilogbook.ui.theme.MiniLogbookTheme
 fun ValueInput(
     inputValue: String,
     label:String,
+    isValidValue: Boolean,
     onInputValueChanged: (String) -> Unit,
     onSave: () -> Unit,
     modifier: Modifier = Modifier,
@@ -55,16 +56,19 @@ fun ValueInput(
             maxLines = 1,
             keyboardActions = KeyboardActions(
                 onDone = {
-                    onSave.invoke()
-                    keyboardController?.hide()
+                    if(isValidValue) {
+                        onSave.invoke()
+                        keyboardController?.hide()
+                    }
                 }
             )
         )
         IconButton(
             modifier = Modifier.padding(start = 10.dp),
-            enabled = inputValue.isNotEmpty(),
+            enabled = isValidValue,
             onClick = {
-                onSave.invoke()
+                if(isValidValue)
+                    onSave.invoke()
             }
         ) {
             Icon(imageVector = icon, iconDescription)
@@ -78,7 +82,7 @@ fun ValueInput(
 fun ValueInputPreview(){
     MiniLogbookTheme {
         Surface {
-            ValueInput("","value",{},{})
+            ValueInput("","value", false,{},{})
         }
     }
 }

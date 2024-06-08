@@ -42,7 +42,7 @@ class BloodGlucoseRecordsViewModel @Inject constructor(private val bloodGlucoseR
     }
 
     private val _uiState: MutableStateFlow<BloodGlucoseRecordsUiState> = MutableStateFlow(
-        BloodGlucoseRecordsUiState("", "", BloodGlucoseUnit.Mgdl, recordsState =  BloodGlucoseRecordsListUIState.Empty)
+        BloodGlucoseRecordsUiState()
     )
     val  uiState = _uiState.asStateFlow()
 
@@ -68,15 +68,15 @@ class BloodGlucoseRecordsViewModel @Inject constructor(private val bloodGlucoseR
         }
 
     private val bloodGlucoseAverage = bloodGlucoseRecordsRepository.bloodGlucoseAverage.onEach { average ->
-        if(average == 0f)
-            return@onEach
         reloadAverage(average)
     }
 
     fun onRecordValueChanged(newValue: String) {
         val currentValue = _uiState.value.newRecordInputValue
+        val newValue = sanitizeDecimalNumberUseCase(currentValue, newValue)
+        val isOnlyDecimalSeparator = newValue.length == 1 && newValue[0] == sanitizeDecimalNumberUseCase.getDecimalSeparatorForCurrentLocale()
         _uiState.update {
-            it.copy(newRecordInputValue = sanitizeDecimalNumberUseCase(currentValue, newValue))
+            it.copy(newRecordInputValue = newValue, isValidNewRecordInput = newValue.isNotEmpty() && !isOnlyDecimalSeparator)
         }
     }
 
@@ -91,12 +91,12 @@ class BloodGlucoseRecordsViewModel @Inject constructor(private val bloodGlucoseR
 
     fun onSaveRecordValue() {
         val record = _uiState.value.newRecordInputValue
-        if(record.isEmpty())
+        if(record.isEmpty() || !uiState.value.isValidNewRecordInput)
             return
 
         addRecord(record)
         _uiState.update {
-            it.copy(newRecordInputValue = "")
+            it.copy(newRecordInputValue = "",isValidNewRecordInput = false)
         }
     }
 
@@ -126,6 +126,9 @@ class BloodGlucoseRecordsViewModel @Inject constructor(private val bloodGlucoseR
     }
 
     private fun reloadAverage(average: Float) {
+        if(average == 0f)
+            return
+
         _uiState.update {
             var convertedAverage = if(uiState.value.selectedUnit ==  BloodGlucoseUnit.Mgdl) average else converMgDlToMmollUseCase(average)
             it.copy(average = convertFloatToLocaleDecimalStringUseCase(convertedAverage) )

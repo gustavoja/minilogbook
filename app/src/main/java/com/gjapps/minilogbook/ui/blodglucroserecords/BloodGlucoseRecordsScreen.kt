@@ -1,6 +1,8 @@
 package com.gjapps.minilogbook.ui.blodglucroserecords
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.calculateEndPadding
+import androidx.compose.foundation.layout.calculateStartPadding
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
@@ -12,15 +14,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.LayoutDirection
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.gjapps.minilogbook.R
 import com.gjapps.minilogbook.data.models.BloodGlucoseUnit
 import com.gjapps.minilogbook.ui.blodglucroserecords.components.average.BloodGlucoseTopBar
 import com.gjapps.minilogbook.ui.blodglucroserecords.components.menu.BloodGlucoseRecordsMenu
+import com.gjapps.minilogbook.ui.blodglucroserecords.components.recordslist.BloodGlucoseRecordsList
 import com.gjapps.minilogbook.ui.blodglucroserecords.components.recordslist.BloodGlucoseRecordsListMessage
 import com.gjapps.minilogbook.ui.blodglucroserecords.components.recordslist.uistates.BloodGlucoseRecordItemUIState
-import com.gjapps.minilogbook.ui.blodglucroserecords.components.recordslist.BloodGlucoseRecordsList
 import com.gjapps.minilogbook.ui.blodglucroserecords.components.recordslist.uistates.BloodGlucoseRecordsListUIState
 import com.gjapps.minilogbook.ui.theme.MiniLogbookTheme
 
@@ -52,7 +55,7 @@ fun BloodGlucoseRecordsScreen(
 
     Scaffold { innerPadding ->
         Column(modifier = modifier
-            .padding()
+            .padding(start = innerPadding.calculateStartPadding(LayoutDirection.Ltr), end = innerPadding.calculateEndPadding(LayoutDirection.Ltr))
             .fillMaxSize()){
 
             BloodGlucoseTopBar(state.average, selectedUnitName,innerPadding, Modifier.align(Alignment.CenterHorizontally))
@@ -72,6 +75,7 @@ fun BloodGlucoseRecordsScreen(
             BloodGlucoseRecordsMenu(
                 inputValue = state.newRecordInputValue,
                 selectedUnit = state.selectedUnit,
+                isValidValue = state.isValidNewRecordInput,
                 selectedUnitName =selectedUnitName,
                 onSave = onSave,
                 onInputValueChanged = onInputValueChanged,
@@ -89,7 +93,7 @@ fun BloodGlucoseRecordsScreen(
 fun BloodGlucoseRecordsScreenPreview(){
     MiniLogbookTheme {
         Surface {
-            BloodGlucoseRecordsScreen(state = BloodGlucoseRecordsUiState("","",
+            BloodGlucoseRecordsScreen(state = BloodGlucoseRecordsUiState("","",false,
                 BloodGlucoseUnit.Mmoldl), {}, {}, {}, Modifier)
         }
     }
@@ -100,7 +104,7 @@ fun BloodGlucoseRecordsScreenPreview(){
 fun BloodGlucoseRecordsWithRecordsScreenPreview(){
     MiniLogbookTheme {
         Surface {
-            BloodGlucoseRecordsScreen(state = BloodGlucoseRecordsUiState("150","mmol/L",
+            BloodGlucoseRecordsScreen(state = BloodGlucoseRecordsUiState("150","mmol/L",false,
                 BloodGlucoseUnit.Mmoldl,recordsState = BloodGlucoseRecordsListUIState.WithBloodGlucoseRecords(listOf(
                     BloodGlucoseRecordItemUIState("150.5","12/12/24",)
                 ))), {}, {}, {}, Modifier)

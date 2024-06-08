@@ -33,7 +33,9 @@ import com.gjapps.minilogbook.ui.sharedcomponents.ValueInput
 import com.gjapps.minilogbook.ui.theme.MiniLogbookTheme
 
 @Composable
-fun BloodGlucoseRecordsMenu(inputValue:String, selectedUnit: BloodGlucoseUnit,
+fun BloodGlucoseRecordsMenu(inputValue:String,
+                            isValidValue: Boolean,
+                            selectedUnit: BloodGlucoseUnit,
                             selectedUnitName: String,
                             onSave: () -> Unit, onInputValueChanged: (String) -> Unit, onFilterChanged: (BloodGlucoseUnit) -> Unit,
                             innerPadding: PaddingValues,
@@ -64,6 +66,7 @@ fun BloodGlucoseRecordsMenu(inputValue:String, selectedUnit: BloodGlucoseUnit,
                 ValueInput(
                     inputValue,
                     selectedUnitName,
+                    isValidValue,
                     onInputValueChanged,
                     onSave,
                     modifier = Modifier.padding(top = 20.dp)
@@ -78,7 +81,7 @@ fun BloodGlucoseRecordsMenu(inputValue:String, selectedUnit: BloodGlucoseUnit,
 fun AddBloodGlucoseRecordComponentPreview(){
     MiniLogbookTheme {
         Surface {
-            BloodGlucoseRecordsMenu("", BloodGlucoseUnit.Mgdl,"Mgdl", {}, {}, {},
+            BloodGlucoseRecordsMenu("",true, BloodGlucoseUnit.Mgdl,"Mgdl", {}, {}, {},
                 PaddingValues(0.dp),Modifier,true
             )
         }
