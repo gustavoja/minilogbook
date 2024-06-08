@@ -12,7 +12,8 @@ import kotlinx.coroutines.flow.Flow
 @Entity(tableName = "BloodGlucoseRecordsOverviewEntity")
 data class BloodGlucoseRecordsOverviewEntity(
     val recordsAverage: Float,
-    val recordsSum: Float
+    val recordsSum: Float,
+    val recordsCount: Int
 ) {
     @PrimaryKey(autoGenerate = true)
     var uid: Int = 0

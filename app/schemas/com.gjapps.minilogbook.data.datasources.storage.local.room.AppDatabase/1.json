@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "b6812e603a4d02fcb5d762af89fe48e6",
+    "identityHash": "03e70e0b79d6f6801c88e6ed09eeab24",
     "entities": [
       {
         "tableName": "BloodGlucoseRecordEntity",
@@ -38,7 +38,7 @@
       },
       {
         "tableName": "BloodGlucoseRecordsOverviewEntity",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`recordsAverage` REAL NOT NULL, `recordsSum` REAL NOT NULL, `uid` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`recordsAverage` REAL NOT NULL, `recordsSum` REAL NOT NULL, `recordsCount` INTEGER NOT NULL, `uid` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL)",
         "fields": [
           {
             "fieldPath": "recordsAverage",
@@ -50,6 +50,12 @@
             "fieldPath": "recordsSum",
             "columnName": "recordsSum",
             "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "recordsCount",
+            "columnName": "recordsCount",
+            "affinity": "INTEGER",
             "notNull": true
           },
           {
@@ -72,7 +78,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'b6812e603a4d02fcb5d762af89fe48e6')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '03e70e0b79d6f6801c88e6ed09eeab24')"
     ]
   }
 }

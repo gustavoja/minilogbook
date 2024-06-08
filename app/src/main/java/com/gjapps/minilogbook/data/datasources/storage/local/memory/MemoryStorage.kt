@@ -13,6 +13,7 @@ class MemoryStorage : StorageDataSource {
     private var records = mutableListOf<BloodGlucoseRecordModel>()
     private val _bloodGlucoseRecords = MutableSharedFlow<List<BloodGlucoseRecordModel>>(extraBufferCapacity = 1,replay = 1)
     private var _bloodGlucoseRecordsSum = 0f
+    private var _bloodGlucoseRecordsCount = 0
 
     override val bloodGlucoseRecords: Flow<List<BloodGlucoseRecordModel>>
         get() = _bloodGlucoseRecords.asSharedFlow()
@@ -21,15 +22,16 @@ class MemoryStorage : StorageDataSource {
     override val bloodGlucoseAverage: StateFlow<Float>
         get() = _bloodGlucoseAverage.asStateFlow()
 
-    override suspend fun saveRecord(value: BloodGlucoseRecordModel, newAverage:Float, newRecordsSum:Float) {
+    override suspend fun saveRecord(value: BloodGlucoseRecordModel, newAverage:Float, newRecordsSum:Float,newRecordsCount:Int) {
         records.add(value)
         _bloodGlucoseRecordsSum = newRecordsSum
+        _bloodGlucoseRecordsCount = newRecordsCount
         _bloodGlucoseRecords.emit(records)
         _bloodGlucoseAverage.emit(newAverage)
     }
 
-    override suspend fun bloodGlucoseRecordsCount():Int{
-        return records.count()
+    override suspend fun getBloodGlucoseRecordsCount():Int{
+        return _bloodGlucoseRecordsCount
     }
 
     override suspend fun getBloodGlucoseRecordsSum(): Float {

@@ -26,8 +26,9 @@ class BloodGlucoseRepositoryImpl @Inject constructor(private val storageDataSour
     override suspend fun saveRecord(mgdlValue: Float) {
         val record = BloodGlucoseRecordModel(mgdlValue,Date().toUTC())
         val recordsSum = storageDataSource.getBloodGlucoseRecordsSum() + mgdlValue
-        val average = recordsSum/(storageDataSource.bloodGlucoseRecordsCount()+1)
-        storageDataSource.saveRecord(record,average,recordsSum)
+        val recordsCount = storageDataSource.getBloodGlucoseRecordsCount() + 1
+        val average = recordsSum/recordsCount
+        storageDataSource.saveRecord(record,average,recordsSum,recordsCount)
     }
 
     override suspend fun deleteRecords() {

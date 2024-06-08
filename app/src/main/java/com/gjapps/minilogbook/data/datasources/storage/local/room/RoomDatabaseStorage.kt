@@ -23,16 +23,17 @@ class RoomDatabaseStorage(private val bloodGlucoseRecordDao: BloodGlucoseRecordD
     override suspend fun saveRecord(
         record: BloodGlucoseRecordModel,
         newAverage: Float,
-        newRecordsSum: Float
+        newRecordsSum: Float,
+        newRecordsCount:Int
     ) {
         bloodGlucoseRecordDao.insert(BloodGlucoseRecordEntity(value = record.mgdlValue,date = record.date))
 
-        addOrUpdateOverview(newAverage, newRecordsSum)
+        addOrUpdateOverview(newAverage, newRecordsSum, newRecordsCount)
     }
 
-    override suspend fun bloodGlucoseRecordsCount(): Int {
+    override suspend fun getBloodGlucoseRecordsCount(): Int {
         return withContext(Dispatchers.IO){
-            bloodGlucoseRecordDao.count()
+            bloodGlucoseRecordsOverviewDao.getFirst()?.first()?.recordsCount ?: 0
         }
     }
 
@@ -48,17 +49,18 @@ class RoomDatabaseStorage(private val bloodGlucoseRecordDao: BloodGlucoseRecordD
         }
     }
 
-    private suspend fun addOrUpdateOverview(newAverage: Float, newRecordsSum: Float) {
+    private suspend fun addOrUpdateOverview(newAverage: Float, newRecordsSum: Float, newRecordsCount:Int) {
         var first = bloodGlucoseRecordsOverviewDao.getFirst()?.firstOrNull()
         if (first == null) {
             first = BloodGlucoseRecordsOverviewEntity(
                 recordsAverage = newAverage,
-                recordsSum = newRecordsSum
+                recordsSum = newRecordsSum,
+                recordsCount = newRecordsCount
             )
             bloodGlucoseRecordsOverviewDao.insert(first)
         } else {
             var uid = first.uid
-            first = first.copy(recordsAverage = newAverage, recordsSum = newRecordsSum)
+            first = first.copy(recordsAverage = newAverage, recordsSum = newRecordsSum, recordsCount = newRecordsCount)
             first.uid = uid
             bloodGlucoseRecordsOverviewDao.update(first)
         }
