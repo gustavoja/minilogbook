@@ -91,9 +91,19 @@ class BloodGlucoseRecordsViewModel @Inject constructor(private val bloodGlucoseR
         if(selected == uiState.value.selectedUnit)
             return
 
-
         _uiState.update {
             it.copy(selectedUnit = selected)
+        }
+
+        if(_uiState.value.isValidNewRecordInput) {
+            var convertedValue =
+                convertLocaleDecimalStringFloatUseCase(_uiState.value.newRecordInputValue)
+            convertedValue =
+                if (uiState.value.selectedUnit == BloodGlucoseUnit.Mgdl)
+                    convertMmollToMgDlUseCase(convertedValue)
+                else
+                    converMgDlToMmollUseCase( convertedValue)
+            onRecordValueChanged(convertFloatToLocaleDecimalStringUseCase(convertedValue))
         }
 
         reloadRecords()
