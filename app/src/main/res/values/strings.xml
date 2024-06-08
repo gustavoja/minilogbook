@@ -9,4 +9,8 @@
     <string name="empty_blood_glucose_records">No blood glucose records added yet.\nStart tracking your blood glucose average by adding new entries below.</string>
     <string name="blood_glucose_records">Blood glucose records</string>
     <string name="something_went_wrong_while_loading_your_records">Something went wrong while loading your records</string>
+    <string name="you_re_about_to_delete_all_your_blood_glucose_records_do_you_want_to_continue">You\'re about to delete all your blood glucose records. Do you want to continue?</string>
+    <string name="delete_all">Delete all</string>
+    <string name="not_now">Not now</string>
+    <string name="warning">Warning</string>
 </resources>

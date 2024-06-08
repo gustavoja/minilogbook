@@ -63,7 +63,10 @@ fun BloodGlucoseTopBar(
                 style = MaterialTheme.typography.titleLarge
             )
             if(average.isNotEmpty() && average != "0.0") {
-                Row(Modifier.fillMaxWidth().padding(top = 30.dp), verticalAlignment = Alignment.CenterVertically) {
+                Row(
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(top = 30.dp), verticalAlignment = Alignment.CenterVertically) {
                     Text(
                         text = formattedString,
                         style = MaterialTheme.typography.titleMedium,
@@ -89,9 +92,9 @@ fun BloodGlucoseTopBar(
 @Composable
 private fun AlertDialog(displayDialog: MutableState<Boolean>, action: () -> Unit) {
     AlertDialog(title = {
-        Text(text = "Warning")
+        Text(text = stringResource(R.string.warning))
     }, text = {
-        Text(text = "You're about to delete all your blood glucose records. Do you want to continue?")
+        Text(text = stringResource(R.string.you_re_about_to_delete_all_your_blood_glucose_records_do_you_want_to_continue))
     }, onDismissRequest = {
         displayDialog.value = false
     },
@@ -100,13 +103,13 @@ private fun AlertDialog(displayDialog: MutableState<Boolean>, action: () -> Unit
                 displayDialog.value = false
                 action.invoke()
             }) {
-                Text(text = "Delete all")
+                Text(text = stringResource(R.string.delete_all))
             }
         }, dismissButton = {
             Button(onClick = {
                 displayDialog.value = false
             }) {
-                Text(text = "Not now")
+                Text(text = stringResource(R.string.not_now))
             }
         })
 }

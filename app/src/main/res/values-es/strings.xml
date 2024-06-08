@@ -9,4 +9,7 @@
     <string name="empty_blood_glucose_records">Aún no se han agregado registros de glucosa en sangre.\nComienza a rastrear tu promedio de glucosa en sangre agregando nuevas entradas en el menú inferior.</string>
     <string name="blood_glucose_records">Registros de glucosa en sangre</string>
     <string name="something_went_wrong_while_loading_your_records">Algo salió mal al cargar tus registros</string>
+    <string name="you_re_about_to_delete_all_your_blood_glucose_records_do_you_want_to_continue">Estás a punto de eliminar todos tus registros de glucosa en sangre. ¿Quieres continuar?</string>
+    <string name="delete_all">Eliminar todo</string> <string name="not_now">Ahora no</string>
+    <string name="warning">Advertencia</string>
 </resources>
