@@ -34,6 +34,13 @@ class BloodGlucoseRecordsViewModel @Inject constructor(private val bloodGlucoseR
                                                        private val converMgDlToMmollUseCase: ConverMgDlToMmollUseCase,
 
                                                        ) : ViewModel() {
+
+    private val exceptionHandler=CoroutineExceptionHandler { _, exception ->
+        _uiState.update {
+            it.copy(recordsState = BloodGlucoseRecordsListUIState.Error)
+        }
+    }
+
     private val _uiState: MutableStateFlow<BloodGlucoseRecordsUiState> = MutableStateFlow(
         BloodGlucoseRecordsUiState("", "", BloodGlucoseUnit.Mgdl, recordsState =  BloodGlucoseRecordsListUIState.Empty)
     )
@@ -60,6 +67,12 @@ class BloodGlucoseRecordsViewModel @Inject constructor(private val bloodGlucoseR
             }
         }
 
+    private val bloodGlucoseAverage = bloodGlucoseRecordsRepository.bloodGlucoseAverage.onEach { average ->
+        if(average == 0f)
+            return@onEach
+        reloadAverage(average)
+    }
+
     fun onRecordValueChanged(newValue: String) {
         val currentValue = _uiState.value.newRecordInputValue
         _uiState.update {
@@ -73,6 +86,7 @@ class BloodGlucoseRecordsViewModel @Inject constructor(private val bloodGlucoseR
         }
 
         reloadRecords()
+        reloadAverage(bloodGlucoseRecordsRepository.bloodGlucoseAverage.value)
     }
 
     fun onSaveRecordValue() {
@@ -88,34 +102,33 @@ class BloodGlucoseRecordsViewModel @Inject constructor(private val bloodGlucoseR
 
     fun onLoaded()
     {
-        viewModelScope.launch(CoroutineExceptionHandler { _, exception ->
-            _uiState.update {
-                it.copy(recordsState = BloodGlucoseRecordsListUIState.Error)
-            }
-        }) {
+        viewModelScope.launch(exceptionHandler) {
             bloodGlucoseRecordsListUiState.collect()
+        }
+
+        viewModelScope.launch(exceptionHandler) {
+            bloodGlucoseAverage.collect()
         }
     }
 
     private fun reloadRecords() {
-        viewModelScope.launch(CoroutineExceptionHandler { _, exception ->
-            _uiState.update {
-                it.copy(recordsState = BloodGlucoseRecordsListUIState.Error)
-            }
-        }) {
+        viewModelScope.launch(exceptionHandler) {
             bloodGlucoseRecordsRepository.reloadBloodGlucoseRecords()
         }
     }
 
     private fun addRecord(value: String){
-        viewModelScope.launch (CoroutineExceptionHandler{ _, exception ->
-            _uiState.update {
-                it.copy(recordsState = BloodGlucoseRecordsListUIState.Error)
-            }
-        }) {
+        viewModelScope.launch(exceptionHandler) {
             var convertedValue = convertLocaleDecimalStringFloatUseCase(value)
             convertedValue = if(uiState.value.selectedUnit ==  BloodGlucoseUnit.Mgdl) convertedValue else convertMmollToMgDlUseCase(convertedValue)
             bloodGlucoseRecordsRepository.saveRecord(convertedValue)
+        }
+    }
+
+    private fun reloadAverage(average: Float) {
+        _uiState.update {
+            var convertedAverage = if(uiState.value.selectedUnit ==  BloodGlucoseUnit.Mgdl) average else converMgDlToMmollUseCase(average)
+            it.copy(average = convertFloatToLocaleDecimalStringUseCase(convertedAverage) )
         }
     }
 }
