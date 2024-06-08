@@ -11,7 +11,7 @@ class ConvertFloatToLocaleDecimalStringUseCaseImpl: ConvertFloatToLocaleDecimalS
     override operator fun invoke(value: Float): String {
         val locale = Locale.getDefault()
         val decimalFormat = DecimalFormat.getInstance(locale)
-        decimalFormat.maximumFractionDigits = 6
+        decimalFormat.maximumFractionDigits = 4
         return decimalFormat.format(value)
     }
 }

@@ -9,4 +9,5 @@ interface StorageDataSource {
     suspend fun saveRecord(record: BloodGlucoseRecordModel, newAverage:Float, newRecordsSum:Float)
     suspend fun bloodGlucoseRecordsCount():Int
     suspend fun getBloodGlucoseRecordsSum():Float
+    suspend fun deleteRecords()
 }

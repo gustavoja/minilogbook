@@ -35,4 +35,8 @@ class MemoryStorage : StorageDataSource {
     override suspend fun getBloodGlucoseRecordsSum(): Float {
         return  _bloodGlucoseRecordsSum
     }
+
+    override suspend fun deleteRecords() {
+        records.clear()
+    }
 }

@@ -43,9 +43,9 @@ object DataModule {
 
     @Singleton
     @Provides
-    fun providesStorageDataSource(bloodGlucoseRecordDao:BloodGlucoseRecordDao, bloodGlucoseRecordsOverviewDao:BloodGlucoseRecordsOverviewDao) : StorageDataSource {
+    fun providesStorageDataSource(bloodGlucoseRecordDao:BloodGlucoseRecordDao, bloodGlucoseRecordsOverviewDao:BloodGlucoseRecordsOverviewDao,appDatabase: AppDatabase) : StorageDataSource {
         //return MemoryStorage()
-        return RoomDatabaseStorage(bloodGlucoseRecordDao,bloodGlucoseRecordsOverviewDao)
+        return RoomDatabaseStorage(bloodGlucoseRecordDao,bloodGlucoseRecordsOverviewDao,appDatabase)
     }
 
     @Singleton

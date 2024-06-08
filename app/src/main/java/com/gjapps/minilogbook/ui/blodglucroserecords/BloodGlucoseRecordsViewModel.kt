@@ -144,5 +144,14 @@ class BloodGlucoseRecordsViewModel @Inject constructor(private val bloodGlucoseR
             it.copy(average = convertFloatToLocaleDecimalStringUseCase(convertedAverage) )
         }
     }
+
+    fun onDeletedRecords() {
+        viewModelScope.launch(exceptionHandler) {
+            bloodGlucoseRecordsRepository.deleteRecords()
+            _uiState.update {
+                it.copy(average = "")
+            }
+        }
+    }
 }
 

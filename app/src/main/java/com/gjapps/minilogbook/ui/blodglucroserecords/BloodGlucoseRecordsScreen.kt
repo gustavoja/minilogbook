@@ -19,12 +19,12 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.gjapps.minilogbook.R
 import com.gjapps.minilogbook.data.models.BloodGlucoseUnit
-import com.gjapps.minilogbook.ui.blodglucroserecords.components.average.BloodGlucoseTopBar
 import com.gjapps.minilogbook.ui.blodglucroserecords.components.menu.BloodGlucoseRecordsMenu
 import com.gjapps.minilogbook.ui.blodglucroserecords.components.recordslist.BloodGlucoseRecordsList
 import com.gjapps.minilogbook.ui.blodglucroserecords.components.recordslist.BloodGlucoseRecordsListMessage
 import com.gjapps.minilogbook.ui.blodglucroserecords.components.recordslist.uistates.BloodGlucoseRecordItemUIState
 import com.gjapps.minilogbook.ui.blodglucroserecords.components.recordslist.uistates.BloodGlucoseRecordsListUIState
+import com.gjapps.minilogbook.ui.blodglucroserecords.components.topbar.BloodGlucoseTopBar
 import com.gjapps.minilogbook.ui.theme.MiniLogbookTheme
 
 
@@ -38,7 +38,7 @@ fun BloodGlucoseRecordsScreen(
     LaunchedEffect(Unit) {
         viewModel.onViewResumed()
     }
-    BloodGlucoseRecordsScreen(state, viewModel::onFilterChanged, viewModel::onRecordValueChanged, viewModel::onSaveRecordValue,modifier)
+    BloodGlucoseRecordsScreen(state, viewModel::onFilterChanged, viewModel::onRecordValueChanged, viewModel::onSaveRecordValue,viewModel::onDeletedRecords,modifier)
 }
 
 @Composable
@@ -47,6 +47,7 @@ fun BloodGlucoseRecordsScreen(
     onFilterChanged: (BloodGlucoseUnit) -> Unit,
     onInputValueChanged: (String) -> Unit,
     onSave: () -> Unit,
+    onDeletedRecords: () -> Unit,
     modifier: Modifier = Modifier
 )
 {
@@ -58,7 +59,7 @@ fun BloodGlucoseRecordsScreen(
             .padding(start = innerPadding.calculateStartPadding(LayoutDirection.Ltr), end = innerPadding.calculateEndPadding(LayoutDirection.Ltr))
             .fillMaxSize()){
 
-            BloodGlucoseTopBar(state.average, selectedUnitName,innerPadding, Modifier.align(Alignment.CenterHorizontally))
+            BloodGlucoseTopBar(state.average, selectedUnitName,innerPadding, onDeletedRecords, Modifier.align(Alignment.CenterHorizontally))
 
             when (state.recordsState) {
                 BloodGlucoseRecordsListUIState.Empty -> {
@@ -94,7 +95,7 @@ fun BloodGlucoseRecordsScreenPreview(){
     MiniLogbookTheme {
         Surface {
             BloodGlucoseRecordsScreen(state = BloodGlucoseRecordsUiState("","",false,
-                BloodGlucoseUnit.Mmoldl), {}, {}, {}, Modifier)
+                BloodGlucoseUnit.Mmoldl), {}, {}, {}, {}, Modifier)
         }
     }
 }
@@ -107,7 +108,7 @@ fun BloodGlucoseRecordsWithRecordsScreenPreview(){
             BloodGlucoseRecordsScreen(state = BloodGlucoseRecordsUiState("150","mmol/L",false,
                 BloodGlucoseUnit.Mmoldl,recordsState = BloodGlucoseRecordsListUIState.WithBloodGlucoseRecords(listOf(
                     BloodGlucoseRecordItemUIState("150.5","12/12/24",)
-                ))), {}, {}, {}, Modifier)
+                ))), {}, {}, {}, {}, Modifier)
         }
     }
 }

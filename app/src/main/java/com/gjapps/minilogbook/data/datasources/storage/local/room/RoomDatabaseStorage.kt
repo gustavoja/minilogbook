@@ -14,7 +14,7 @@ import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 
-class RoomDatabaseStorage(private val bloodGlucoseRecordDao: BloodGlucoseRecordDao, private val bloodGlucoseRecordsOverviewDao: BloodGlucoseRecordsOverviewDao) : StorageDataSource {
+class RoomDatabaseStorage(private val bloodGlucoseRecordDao: BloodGlucoseRecordDao, private val bloodGlucoseRecordsOverviewDao: BloodGlucoseRecordsOverviewDao, private val appDatabase: AppDatabase) : StorageDataSource {
     override val bloodGlucoseAverage: Flow<Float>
         get() =  bloodGlucoseRecordsOverviewDao.getFirst()?.map { it?.recordsAverage ?: 0f } ?: flowOf(0f)
     override val bloodGlucoseRecords: Flow<List<BloodGlucoseRecordModel>>
@@ -39,6 +39,12 @@ class RoomDatabaseStorage(private val bloodGlucoseRecordDao: BloodGlucoseRecordD
     override suspend fun getBloodGlucoseRecordsSum(): Float {
         return withContext(Dispatchers.IO){
             bloodGlucoseRecordsOverviewDao.getFirst()?.first()?.recordsSum ?: 0f
+        }
+    }
+
+    override suspend fun deleteRecords() {
+        withContext(Dispatchers.IO) {
+            appDatabase.clearAllTables()
         }
     }
 
