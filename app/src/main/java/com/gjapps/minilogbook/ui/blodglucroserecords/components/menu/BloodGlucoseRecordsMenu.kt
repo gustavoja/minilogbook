@@ -19,7 +19,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -42,7 +42,7 @@ fun BloodGlucoseRecordsMenu(inputValue:String,
                             modifier: Modifier = Modifier,
                             expandedOnAppear: Boolean = true)
 {
-    var addMenuVisible by remember { mutableStateOf(expandedOnAppear) }
+    var addMenuVisible by rememberSaveable { mutableStateOf(expandedOnAppear) }
     val iconRotation by animateFloatAsState(if(addMenuVisible) 180f else 0f, label = "Blood glucose Menu visibility animation")
 
     Card(modifier = modifier.fillMaxWidth(),

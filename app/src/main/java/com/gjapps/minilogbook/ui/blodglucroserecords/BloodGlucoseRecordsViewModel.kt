@@ -100,7 +100,7 @@ class BloodGlucoseRecordsViewModel @Inject constructor(private val bloodGlucoseR
         }
     }
 
-    fun onLoaded()
+    fun onViewResumed()
     {
         viewModelScope.launch(exceptionHandler) {
             bloodGlucoseRecordsListUiState.collect()
