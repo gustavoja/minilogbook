@@ -1,10 +1,12 @@
 package com.gjapps.minilogbook.ui.blodglucroserecords
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.calculateEndPadding
 import androidx.compose.foundation.layout.calculateStartPadding
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
@@ -56,7 +58,10 @@ fun BloodGlucoseRecordsScreen(
 
     Scaffold { innerPadding ->
         Column(modifier = modifier
-            .padding(start = innerPadding.calculateStartPadding(LayoutDirection.Ltr), end = innerPadding.calculateEndPadding(LayoutDirection.Ltr))
+            .padding(
+                start = innerPadding.calculateStartPadding(LayoutDirection.Ltr),
+                end = innerPadding.calculateEndPadding(LayoutDirection.Ltr)
+            )
             .fillMaxSize()){
 
             BloodGlucoseTopBar(state.average, selectedUnitName,innerPadding, onDeletedRecords, Modifier.align(Alignment.CenterHorizontally))
@@ -70,6 +75,11 @@ fun BloodGlucoseRecordsScreen(
                 }
                 BloodGlucoseRecordsListUIState.Error -> {
                     BloodGlucoseRecordsListMessage(stringResource(R.string.something_went_wrong_while_loading_your_records),Modifier.weight(1f))
+                }
+                BloodGlucoseRecordsListUIState.Loading -> {
+                    Box(modifier = Modifier.fillMaxSize().weight(1f)) {
+                        CircularProgressIndicator(Modifier.align(Alignment.Center))
+                    }
                 }
             }
 

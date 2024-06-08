@@ -74,7 +74,6 @@ class BloodGlucoseRecordsViewModel @Inject constructor(private val bloodGlucoseR
         }
 
     private val bloodGlucoseAverage = bloodGlucoseRecordsRepository.bloodGlucoseAverage.onEach { average ->
-
         print("bloodGlucoseAverage reloadAverage: $average")
         reloadAverage(average)
     }.stateIn(viewModelScope, SharingStarted.Eagerly, 0f)

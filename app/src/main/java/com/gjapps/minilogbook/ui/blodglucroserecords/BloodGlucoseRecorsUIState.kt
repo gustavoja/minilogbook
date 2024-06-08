@@ -8,6 +8,5 @@ data class BloodGlucoseRecordsUiState (
     val newRecordInputValue:String = "",
     val isValidNewRecordInput:Boolean = false,
     val selectedUnit: BloodGlucoseUnit = BloodGlucoseUnit.Mgdl,
-    val loading : Boolean = false,
-    val recordsState : BloodGlucoseRecordsListUIState = BloodGlucoseRecordsListUIState.Empty
+    val recordsState : BloodGlucoseRecordsListUIState = BloodGlucoseRecordsListUIState.Loading
 )
