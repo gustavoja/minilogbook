@@ -18,7 +18,7 @@ data class BloodGlucoseRecordEntity(
 
 @Dao
 interface BloodGlucoseRecordDao {
-    @Query("SELECT * FROM BloodGlucoseRecordEntity ORDER BY uid DESC")
+    @Query("SELECT * FROM BloodGlucoseRecordEntity ORDER BY uid DESC LIMIT 100")
     fun getAll(): Flow<List<BloodGlucoseRecordEntity>>
 
     @Insert
