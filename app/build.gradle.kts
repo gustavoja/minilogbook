@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
     alias(libs.plugins.hilt)
+    alias(libs.plugins.room)
     id(libs.plugins.kapt.get().pluginId)
 }
 
@@ -19,6 +20,10 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
             useSupportLibrary = true
+        }
+
+        room {
+            schemaDirectory("$projectDir/schemas")
         }
     }
 
@@ -64,9 +69,15 @@ dependencies {
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.hilt.navigation.compose)
 
+    //hilt
     implementation(libs.hilt.android)
     implementation(libs.androidx.lifecycle.runtime.compose)
     kapt(libs.hilt.android.compiler)
+
+    //room
+    implementation(libs.androidx.room.runtime)
+    implementation(libs.androidx.room.ktx)
+    kapt(libs.androidx.room.compiler)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
@@ -75,4 +86,5 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+
 }
