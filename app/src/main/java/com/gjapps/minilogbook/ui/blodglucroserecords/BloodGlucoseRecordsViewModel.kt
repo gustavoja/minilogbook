@@ -73,10 +73,10 @@ class BloodGlucoseRecordsViewModel @Inject constructor(private val bloodGlucoseR
             }
         }
 
-    private val bloodGlucoseAverage = bloodGlucoseRecordsRepository.bloodGlucoseAverage.onEach { average ->
-        print("bloodGlucoseAverage reloadAverage: $average")
-        reloadAverage(average)
-    }.stateIn(viewModelScope, SharingStarted.Eagerly, 0f)
+    private val bloodGlucoseAverageState = bloodGlucoseRecordsRepository.bloodGlucoseAverage
+        .onEach { average ->
+            reloadAverage(average)
+        }.stateIn(viewModelScope, SharingStarted.Eagerly, 0f)
 
     fun onRecordValueChanged(newValue: String) {
         val currentValue = _uiState.value.newRecordInputValue
@@ -97,7 +97,7 @@ class BloodGlucoseRecordsViewModel @Inject constructor(private val bloodGlucoseR
         }
 
         reloadRecords()
-        reloadAverage(bloodGlucoseAverage.value)
+        reloadAverage(bloodGlucoseAverageState.value)
     }
 
     fun onSaveRecordValue() {
@@ -115,7 +115,7 @@ class BloodGlucoseRecordsViewModel @Inject constructor(private val bloodGlucoseR
     {
         reloadRecords()
         viewModelScope.launch(exceptionHandler) {
-            bloodGlucoseAverage.collect()
+            bloodGlucoseAverageState.collect()
         }
     }
 
