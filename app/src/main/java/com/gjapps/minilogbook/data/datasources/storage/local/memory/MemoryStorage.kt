@@ -27,9 +27,6 @@ class MemoryStorage : StorageDataSource {
         _bloodGlucoseRecords.emit(records)
         _bloodGlucoseAverage.emit(newAverage)
     }
-    override suspend fun reloadBloodGlucoseRecords(){
-        _bloodGlucoseRecords.emit(records)
-    }
 
     override suspend fun bloodGlucoseRecordsCount():Int{
         return records.count()

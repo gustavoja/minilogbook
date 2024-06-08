@@ -30,9 +30,6 @@ class RoomDatabaseStorage(private val bloodGlucoseRecordDao: BloodGlucoseRecordD
         addOrUpdateOverview(newAverage, newRecordsSum)
     }
 
-    override suspend fun reloadBloodGlucoseRecords() {
-    }
-
     override suspend fun bloodGlucoseRecordsCount(): Int {
         return withContext(Dispatchers.IO){
             bloodGlucoseRecordDao.count()

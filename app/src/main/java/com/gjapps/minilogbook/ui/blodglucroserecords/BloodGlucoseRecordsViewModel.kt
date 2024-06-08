@@ -1,5 +1,6 @@
 package com.gjapps.minilogbook.ui.blodglucroserecords
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.gjapps.minilogbook.data.models.BloodGlucoseUnit
@@ -14,12 +15,15 @@ import com.gjapps.minilogbook.ui.blodglucroserecords.components.recordslist.uist
 import com.gjapps.minilogbook.ui.blodglucroserecords.components.recordslist.uistates.BloodGlucoseRecordsListUIState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -31,11 +35,13 @@ class BloodGlucoseRecordsViewModel @Inject constructor(private val bloodGlucoseR
                                                        private val convertLocaleDecimalStringFloatUseCase: ConvertLocaleDecimalStringFloatUseCase,
                                                        private val convertFloatToLocaleDecimalStringUseCase: ConvertFloatToLocaleDecimalStringUseCase,
                                                        private val convertMmollToMgDlUseCase: ConverMmollToMgDlUseCase,
-                                                       private val converMgDlToMmollUseCase: ConverMgDlToMmollUseCase,
-
+                                                       private val converMgDlToMmollUseCase: ConverMgDlToMmollUseCase
                                                        ) : ViewModel() {
 
+    private var bloodGlucoseRecordsListSuscription : Job? = null
+
     private val exceptionHandler=CoroutineExceptionHandler { _, exception ->
+        Log.e("BloodGlucoseRecordsViewModel", exception.message, exception)
         _uiState.update {
             it.copy(recordsState = BloodGlucoseRecordsListUIState.Error)
         }
@@ -68,8 +74,10 @@ class BloodGlucoseRecordsViewModel @Inject constructor(private val bloodGlucoseR
         }
 
     private val bloodGlucoseAverage = bloodGlucoseRecordsRepository.bloodGlucoseAverage.onEach { average ->
+
+        print("bloodGlucoseAverage reloadAverage: $average")
         reloadAverage(average)
-    }
+    }.stateIn(viewModelScope, SharingStarted.Eagerly, 0f)
 
     fun onRecordValueChanged(newValue: String) {
         val currentValue = _uiState.value.newRecordInputValue
@@ -81,12 +89,16 @@ class BloodGlucoseRecordsViewModel @Inject constructor(private val bloodGlucoseR
     }
 
     fun onFilterChanged(selected: BloodGlucoseUnit) {
+        if(selected == uiState.value.selectedUnit)
+            return
+
+
         _uiState.update {
             it.copy(selectedUnit = selected)
         }
 
         reloadRecords()
-        reloadAverage(bloodGlucoseRecordsRepository.bloodGlucoseAverage.value)
+        reloadAverage(bloodGlucoseAverage.value)
     }
 
     fun onSaveRecordValue() {
@@ -102,18 +114,16 @@ class BloodGlucoseRecordsViewModel @Inject constructor(private val bloodGlucoseR
 
     fun onViewResumed()
     {
-        viewModelScope.launch(exceptionHandler) {
-            bloodGlucoseRecordsListUiState.collect()
-        }
-
+        reloadRecords()
         viewModelScope.launch(exceptionHandler) {
             bloodGlucoseAverage.collect()
         }
     }
 
     private fun reloadRecords() {
-        viewModelScope.launch(exceptionHandler) {
-            bloodGlucoseRecordsRepository.reloadBloodGlucoseRecords()
+        bloodGlucoseRecordsListSuscription?.cancel()
+        bloodGlucoseRecordsListSuscription = viewModelScope.launch(exceptionHandler) {
+            bloodGlucoseRecordsListUiState.collect()
         }
     }
 

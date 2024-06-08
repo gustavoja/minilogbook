@@ -13,8 +13,6 @@ interface BloodGlucoseRepository {
     val bloodGlucoseRecords: Flow<List<BloodGlucoseRecordModel>>
     val bloodGlucoseAverage: Flow<Float>
     suspend fun saveRecord(mgdlValue: Float)
-
-    suspend fun reloadBloodGlucoseRecords()
 }
 
 class BloodGlucoseRepositoryImpl @Inject constructor(private val storageDataSource: StorageDataSource): BloodGlucoseRepository {
@@ -29,9 +27,5 @@ class BloodGlucoseRepositoryImpl @Inject constructor(private val storageDataSour
         val recordsSum = storageDataSource.getBloodGlucoseRecordsSum() + mgdlValue
         val average = recordsSum/(storageDataSource.bloodGlucoseRecordsCount()+1)
         storageDataSource.saveRecord(record,average,recordsSum)
-    }
-
-    override suspend fun reloadBloodGlucoseRecords() {
-        storageDataSource.reloadBloodGlucoseRecords()
     }
 }
