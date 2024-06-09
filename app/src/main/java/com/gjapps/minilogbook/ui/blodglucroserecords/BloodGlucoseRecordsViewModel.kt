@@ -168,7 +168,6 @@ class BloodGlucoseRecordsViewModel @Inject constructor(private val bloodGlucoseR
                 when (selected) {
                     BloodGlucoseUnit.Mgdl -> convertMmollToMgDl(convertedValue)
                     BloodGlucoseUnit.Mmoldl -> converMgDlToMmoll( convertedValue)
-                    else -> return
                 }
             onNewRecordValueChanged(convertToCurrentLanguageDecimalFormat(convertedValue))
         }
