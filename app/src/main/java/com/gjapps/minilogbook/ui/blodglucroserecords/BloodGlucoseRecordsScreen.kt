@@ -84,7 +84,7 @@ fun BloodGlucoseRecordsScreen(
             }
 
             BloodGlucoseRecordsMenu(
-                inputValue = state.newRecordInputValue,
+                inputValue = state.newRecordUserInputValue,
                 selectedUnit = state.selectedUnit,
                 isValidValue = state.isValidNewRecordInput,
                 selectedUnitName =selectedUnitName,

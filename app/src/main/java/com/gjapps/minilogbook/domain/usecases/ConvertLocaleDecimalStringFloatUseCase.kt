@@ -3,11 +3,11 @@ package com.gjapps.minilogbook.domain.usecases
 import java.text.DecimalFormat
 import java.util.Locale
 
-interface ConvertLocaleDecimalStringFloatUseCase {
+interface ConvertFromCurrentLanguageDecimalFormatUseCase {
     operator fun invoke (value: String): Float
 }
 
-class ConvertLocaleDecimalStringFloatUseCaseImpl:ConvertLocaleDecimalStringFloatUseCase {
+class ConvertFromCurrentLanguageDecimalFormatUseCaseImpl:ConvertFromCurrentLanguageDecimalFormatUseCase {
     override operator fun invoke (value: String): Float {
         val locale = Locale.getDefault()
         val decimalFormat = DecimalFormat.getInstance(locale)

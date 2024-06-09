@@ -4,10 +4,10 @@ import com.gjapps.minilogbook.domain.usecases.ConverMgDlToMmollUseCase
 import com.gjapps.minilogbook.domain.usecases.ConverMgDlToMmollUseCaseImpl
 import com.gjapps.minilogbook.domain.usecases.ConverMmollToMgDlUseCase
 import com.gjapps.minilogbook.domain.usecases.ConverMmollToMgDlUseCaseImpl
-import com.gjapps.minilogbook.domain.usecases.ConvertFloatToLocaleDecimalStringUseCase
-import com.gjapps.minilogbook.domain.usecases.ConvertFloatToLocaleDecimalStringUseCaseImpl
-import com.gjapps.minilogbook.domain.usecases.ConvertLocaleDecimalStringFloatUseCase
-import com.gjapps.minilogbook.domain.usecases.ConvertLocaleDecimalStringFloatUseCaseImpl
+import com.gjapps.minilogbook.domain.usecases.ConvertFromCurrentLanguageDecimalFormatUseCase
+import com.gjapps.minilogbook.domain.usecases.ConvertFromCurrentLanguageDecimalFormatUseCaseImpl
+import com.gjapps.minilogbook.domain.usecases.ConvertToCurrentLanguageDecimalFormatUseCase
+import com.gjapps.minilogbook.domain.usecases.ConvertToCurrentLanguageDecimalFormatUseCaseImpl
 import com.gjapps.minilogbook.domain.usecases.DateToLocaleStringFormatUseCase
 import com.gjapps.minilogbook.domain.usecases.DateToLocaleStringFormatUseCaseImpl
 import com.gjapps.minilogbook.domain.usecases.SanitizeDecimalNumberUseCase
@@ -35,14 +35,14 @@ object UseCasesModule {
 
     @ViewModelScoped
     @Provides
-    fun providesConvertLocaleDecimalStringFloatUseCaseImpl() : ConvertLocaleDecimalStringFloatUseCase {
-        return ConvertLocaleDecimalStringFloatUseCaseImpl()
+    fun providesConvertToCurrentLanguageDecimalFormatUseCase() : ConvertToCurrentLanguageDecimalFormatUseCase {
+        return ConvertToCurrentLanguageDecimalFormatUseCaseImpl()
     }
 
     @ViewModelScoped
     @Provides
-    fun providesConvertFloatToLocaleDecimalStringUseCase() : ConvertFloatToLocaleDecimalStringUseCase {
-        return ConvertFloatToLocaleDecimalStringUseCaseImpl()
+    fun providesConvertFromCurrentLanguageDecimalFormatUseCase() : ConvertFromCurrentLanguageDecimalFormatUseCase {
+        return ConvertFromCurrentLanguageDecimalFormatUseCaseImpl()
     }
 
     @ViewModelScoped

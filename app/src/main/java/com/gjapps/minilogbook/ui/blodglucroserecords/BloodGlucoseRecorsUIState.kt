@@ -5,7 +5,7 @@ import com.gjapps.minilogbook.ui.blodglucroserecords.components.recordslist.uist
 
 data class BloodGlucoseRecordsUiState (
     val average:String = "",
-    val newRecordInputValue:String = "",
+    val newRecordUserInputValue:String = "",
     val isValidNewRecordInput:Boolean = false,
     val selectedUnit: BloodGlucoseUnit = BloodGlucoseUnit.Mgdl,
     val recordsState : BloodGlucoseRecordsListUIState = BloodGlucoseRecordsListUIState.Loading
