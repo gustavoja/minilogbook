@@ -1,5 +1,6 @@
 package com.gjapps.minilogbook.ui.blodglucroserecords.components.topbar
 
+import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -47,7 +48,8 @@ fun BloodGlucoseTopBar(
     }
 
     Card(shape = RectangleShape, modifier = modifier
-        .fillMaxWidth(),
+        .fillMaxWidth()
+        .animateContentSize(),
         colors = CardDefaults.cardColors().copy(containerColor =  MaterialTheme.colorScheme.tertiaryContainer),
         elevation = CardDefaults.cardElevation(defaultElevation = 10.dp)){
         Column (
