@@ -5,7 +5,6 @@ import com.gjapps.minilogbook.data.datasources.storage.local.room.daos.BloodGluc
 import com.gjapps.minilogbook.data.datasources.storage.local.room.daos.BloodGlucoseRecordEntity
 import com.gjapps.minilogbook.data.datasources.storage.local.room.daos.BloodGlucoseRecordsOverviewDao
 import com.gjapps.minilogbook.data.datasources.storage.local.room.daos.BloodGlucoseRecordsOverviewEntity
-import com.gjapps.minilogbook.data.models.BloodGlucoseRecordModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
@@ -17,16 +16,16 @@ import kotlinx.coroutines.withContext
 class RoomDatabaseStorage(private val bloodGlucoseRecordDao: BloodGlucoseRecordDao, private val bloodGlucoseRecordsOverviewDao: BloodGlucoseRecordsOverviewDao, private val appDatabase: AppDatabase) : StorageDataSource {
     override val bloodGlucoseAverage: Flow<Float>
         get() =  bloodGlucoseRecordsOverviewDao.getFirst()?.map { it?.recordsAverage ?: 0f } ?: flowOf(0f)
-    override val bloodGlucoseRecords: Flow<List<BloodGlucoseRecordModel>>
-        get() =  bloodGlucoseRecordDao.getAll().map { items -> items.map { BloodGlucoseRecordModel(it.value, it.date) } }
+    override val bloodGlucoseRecords: Flow<List<BloodGlucoseRecordEntity>>
+        get() =  bloodGlucoseRecordDao.getAll()
 
     override suspend fun saveRecord(
-        record: BloodGlucoseRecordModel,
+        record: BloodGlucoseRecordEntity,
         newAverage: Float,
         newRecordsSum: Float,
         newRecordsCount:Int
     ) {
-        bloodGlucoseRecordDao.insert(BloodGlucoseRecordEntity(value = record.mgdlValue,date = record.date))
+        bloodGlucoseRecordDao.insert(record)
 
         addOrUpdateOverview(newAverage, newRecordsSum, newRecordsCount)
     }

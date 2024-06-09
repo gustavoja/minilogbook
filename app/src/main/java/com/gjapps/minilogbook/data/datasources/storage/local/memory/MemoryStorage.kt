@@ -1,7 +1,7 @@
 package com.gjapps.minilogbook.data.datasources.storage.local.memory
 
 import com.gjapps.minilogbook.data.datasources.storage.StorageDataSource
-import com.gjapps.minilogbook.data.models.BloodGlucoseRecordModel
+import com.gjapps.minilogbook.data.datasources.storage.local.room.daos.BloodGlucoseRecordEntity
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -10,19 +10,19 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 
 class MemoryStorage : StorageDataSource {
-    private var records = mutableListOf<BloodGlucoseRecordModel>()
-    private val _bloodGlucoseRecords = MutableSharedFlow<List<BloodGlucoseRecordModel>>(extraBufferCapacity = 1,replay = 1)
+    private var records = mutableListOf<BloodGlucoseRecordEntity>()
+    private val _bloodGlucoseRecords = MutableSharedFlow<List<BloodGlucoseRecordEntity>>(extraBufferCapacity = 1,replay = 1)
     private var _bloodGlucoseRecordsSum = 0f
     private var _bloodGlucoseRecordsCount = 0
 
-    override val bloodGlucoseRecords: Flow<List<BloodGlucoseRecordModel>>
+    override val bloodGlucoseRecords: Flow<List<BloodGlucoseRecordEntity>>
         get() = _bloodGlucoseRecords.asSharedFlow()
 
     private val _bloodGlucoseAverage = MutableStateFlow(0f)
     override val bloodGlucoseAverage: StateFlow<Float>
         get() = _bloodGlucoseAverage.asStateFlow()
 
-    override suspend fun saveRecord(value: BloodGlucoseRecordModel, newAverage:Float, newRecordsSum:Float,newRecordsCount:Int) {
+    override suspend fun saveRecord(value: BloodGlucoseRecordEntity, newAverage:Float, newRecordsSum:Float,newRecordsCount:Int) {
         records.add(value)
         _bloodGlucoseRecordsSum = newRecordsSum
         _bloodGlucoseRecordsCount = newRecordsCount
