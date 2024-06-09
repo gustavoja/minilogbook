@@ -38,6 +38,7 @@ class BloodGlucoseRecordsViewModel @Inject constructor(private val bloodGlucoseR
                                                        ) : ViewModel() {
 
     private var bloodGlucoseRecordsListSuscription : Job? = null
+    private var bloodGlucoseAvergaeSuscription : Job? = null
 
     private val exceptionHandler=CoroutineExceptionHandler { _, exception ->
         Log.e("BloodGlucoseRecordsViewModel", exception.message, exception)
@@ -75,26 +76,10 @@ class BloodGlucoseRecordsViewModel @Inject constructor(private val bloodGlucoseR
             }
         }
 
-    private val bloodGlucoseAverageState = bloodGlucoseRecordsRepository.bloodGlucoseAverage
-        .combine(bloodGlucoseRecordsListState){ average, list ->
-            var convertedAverage = ""
-            if(list is BloodGlucoseRecordsListUIState.WithBloodGlucoseRecords) {
-                convertedAverage = convertToCurrentLanguageDecimalFormat(convertToCurrentlySelectedUnit(average, uiState.value.selectedUnit))
-            }
-            _uiState.update {
-                it.copy(average = convertedAverage)
-            }
-        }
-        .catch {
-            _uiState.update {
-                it.copy(recordsState = BloodGlucoseRecordsListUIState.Error)
-            }
-        }
-        .stateIn(viewModelScope, SharingStarted.Eagerly, 0f)
-
     fun onViewResumed()
     {
         subscribedToGlucoseRecordsFlow()
+        subscribeToGlucoseAverageFlow()
     }
 
     fun onFilterChanged(selected: BloodGlucoseUnit) {
@@ -105,7 +90,7 @@ class BloodGlucoseRecordsViewModel @Inject constructor(private val bloodGlucoseR
         reloadNewRecordUserInput(selected)
     }
 
-    fun onRecordValueChanged(newValue: String) {
+    fun onNewRecordValueChanged(newValue: String) {
         val currentValue = _uiState.value.newRecordUserInputValue
         val newValue = sanitizeDecimalNumber(currentValue, newValue)
         val isOnlyDecimalSeparator = newValue.length == 1 && newValue[0] == sanitizeDecimalNumber.getDecimalSeparatorForCurrentLocale()
@@ -129,6 +114,28 @@ class BloodGlucoseRecordsViewModel @Inject constructor(private val bloodGlucoseR
         bloodGlucoseRecordsListSuscription?.cancel()
         bloodGlucoseRecordsListSuscription = viewModelScope.launch(exceptionHandler) {
             bloodGlucoseRecordsListState.collect()
+        }
+    }
+
+    private fun subscribeToGlucoseAverageFlow() {
+        bloodGlucoseAvergaeSuscription?.cancel()
+        bloodGlucoseAvergaeSuscription = viewModelScope.launch(exceptionHandler) {
+            bloodGlucoseRecordsRepository.bloodGlucoseAverage
+                .combine(bloodGlucoseRecordsListState){ average, list ->
+                    var convertedAverage = ""
+                    if(list is BloodGlucoseRecordsListUIState.WithBloodGlucoseRecords) {
+                        convertedAverage = convertToCurrentLanguageDecimalFormat(convertToCurrentlySelectedUnit(average, uiState.value.selectedUnit))
+                    }
+                    _uiState.update {
+                        it.copy(average = convertedAverage)
+                    }
+                }
+                .catch {
+                    _uiState.update {
+                        it.copy(recordsState = BloodGlucoseRecordsListUIState.Error)
+                    }
+                }
+                .collect()
         }
     }
 
@@ -163,7 +170,7 @@ class BloodGlucoseRecordsViewModel @Inject constructor(private val bloodGlucoseR
                     BloodGlucoseUnit.Mmoldl -> converMgDlToMmoll( convertedValue)
                     else -> return
                 }
-            onRecordValueChanged(convertToCurrentLanguageDecimalFormat(convertedValue))
+            onNewRecordValueChanged(convertToCurrentLanguageDecimalFormat(convertedValue))
         }
     }
 }

@@ -40,7 +40,7 @@ fun BloodGlucoseRecordsScreen(
     LaunchedEffect(Unit) {
         viewModel.onViewResumed()
     }
-    BloodGlucoseRecordsScreen(state, viewModel::onFilterChanged, viewModel::onRecordValueChanged, viewModel::onSaveRecordValue,viewModel::onDeletedRecords,modifier)
+    BloodGlucoseRecordsScreen(state, viewModel::onFilterChanged, viewModel::onNewRecordValueChanged, viewModel::onSaveRecordValue,viewModel::onDeletedRecords,modifier)
 }
 
 @Composable
