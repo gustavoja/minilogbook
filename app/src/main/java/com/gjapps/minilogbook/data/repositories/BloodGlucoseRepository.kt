@@ -38,5 +38,4 @@ class BloodGlucoseRepositoryImpl @Inject constructor(private val storageDataSour
         val recordsCount = storageDataSource.getBloodGlucoseRecordsCount() + 1
         return Triple(recordsSum/recordsCount,recordsSum,recordsCount)
     }
-
 }
