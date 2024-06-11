@@ -8,17 +8,21 @@ import org.mockito.kotlin.any
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.mock
 
+
 class ValidateGlucoseInputUseCaseImplTest {
 
     private lateinit var sanitizeDecimalNumber: SanitizeDecimalNumberUseCase
     private lateinit var validateGlucoseInputUseCase: ValidateGlucoseInputUseCaseImpl
+    private lateinit var decimalSeparatorForCurrentLocaleUseCase: DecimalSeparatorForCurrentLocaleUseCase
 
     @Before
     fun setup() {
-        sanitizeDecimalNumber = mock {
-            on { getDecimalSeparatorForCurrentLocale() } doReturn '.'
+        sanitizeDecimalNumber = Mockito.mock(SanitizeDecimalNumberUseCase::class.java)
+
+        decimalSeparatorForCurrentLocaleUseCase = mock {
+            on { invoke() } doReturn '.' // Customize the decimal separator as needed
         }
-        validateGlucoseInputUseCase = ValidateGlucoseInputUseCaseImpl(sanitizeDecimalNumber)
+        validateGlucoseInputUseCase = ValidateGlucoseInputUseCaseImpl(sanitizeDecimalNumber,decimalSeparatorForCurrentLocaleUseCase)
     }
 
     @Test

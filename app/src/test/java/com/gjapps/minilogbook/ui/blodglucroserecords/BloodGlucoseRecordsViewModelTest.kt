@@ -9,6 +9,7 @@ import com.gjapps.minilogbook.domain.usecases.ConvertBloodGlucoseUnitUseCaseUseC
 import com.gjapps.minilogbook.domain.usecases.ConvertMgDlToMmollUseCaseImpl
 import com.gjapps.minilogbook.domain.usecases.ConvertToCurrentLanguageDateFormatUseCaseImpl
 import com.gjapps.minilogbook.domain.usecases.ConvertToCurrentLanguageFormatUseCaseImpl
+import com.gjapps.minilogbook.domain.usecases.DecimalSeparatorForCurrentLocaleUseCase
 import com.gjapps.minilogbook.domain.usecases.ParseFromLanguageFormatUseCaseImpl
 import com.gjapps.minilogbook.domain.usecases.SanitizeDecimalNumberUseCaseImpl
 import com.gjapps.minilogbook.domain.usecases.ValidateGlucoseInputUseCaseImpl
@@ -25,6 +26,7 @@ import org.junit.Test
 import org.mockito.Mockito
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.`when`
+import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.verify
 import strikt.api.expectThat
@@ -38,16 +40,23 @@ class BloodGlucoseRecordsViewModelTest{
     private lateinit var bloodGlucoseRepositoryMock: BloodGlucoseRepository
     private lateinit var bloodGlucoseRecordsFlowMock : Flow<List<BloodGlucoseRecordModel>>
     private lateinit var bloodGlucoseAverageFlowMock : Flow<Float>
+    private lateinit var decimalSeparatorForCurrentLocaleUseCase: DecimalSeparatorForCurrentLocaleUseCase
 
     @OptIn(ExperimentalCoroutinesApi::class)
     @Before
     fun setup() {
         Dispatchers.setMain(UnconfinedTestDispatcher())
         bloodGlucoseRepositoryMock = setupBloodRecordsRepositoryMock();
+
         createViewModel()
     }
 
     private fun createViewModel() {
+
+        decimalSeparatorForCurrentLocaleUseCase = mock {
+            on { invoke() } doReturn '.' // Customize the decimal separator as needed
+        }
+
         viewModel = BloodGlucoseRecordsViewModel(
             bloodGlucoseRepositoryMock,
             ConvertToCurrentLanguageDateFormatUseCaseImpl(),
@@ -57,7 +66,9 @@ class BloodGlucoseRecordsViewModelTest{
                 ConverMmollToMgDlUseCaseImpl(),
                 ParseFromLanguageFormatUseCaseImpl()
             ),
-            ValidateGlucoseInputUseCaseImpl(SanitizeDecimalNumberUseCaseImpl())
+            ValidateGlucoseInputUseCaseImpl(SanitizeDecimalNumberUseCaseImpl(decimalSeparatorForCurrentLocaleUseCase),
+                decimalSeparatorForCurrentLocaleUseCase
+            )
         )
     }
 
@@ -155,6 +166,10 @@ class BloodGlucoseRecordsViewModelTest{
         val bloodGlucoseAverageFlowMock = mock<Flow<Float>>()
         `when`(bloodGlucoseRepositoryMock.bloodGlucoseAverage).thenReturn(bloodGlucoseAverageFlowMock)
 
+        decimalSeparatorForCurrentLocaleUseCase = mock {
+            on { invoke() } doReturn '.'
+        }
+
         viewModel = BloodGlucoseRecordsViewModel(
             bloodGlucoseRepositoryMock,
             ConvertToCurrentLanguageDateFormatUseCaseImpl(),
@@ -164,7 +179,7 @@ class BloodGlucoseRecordsViewModelTest{
                 ConverMmollToMgDlUseCaseImpl(),
                 ParseFromLanguageFormatUseCaseImpl()
             ),
-            ValidateGlucoseInputUseCaseImpl(SanitizeDecimalNumberUseCaseImpl())
+            ValidateGlucoseInputUseCaseImpl(SanitizeDecimalNumberUseCaseImpl(decimalSeparatorForCurrentLocaleUseCase),decimalSeparatorForCurrentLocaleUseCase)
         )
 
         //act
@@ -182,7 +197,7 @@ class BloodGlucoseRecordsViewModelTest{
     }
 
     @Test
-    fun whenRecordListmittedFromTheRepo_ExpectThatUiStateIsUpdatedWithTheTasksEmitted() = runTest{
+    fun whenRecordListEmittedFromTheRepo_ExpectThatUiStateIsUpdatedWithTheTasksEmitted() = runTest{
         //arrange
         var bloodGlucoseRepositoryMock = mock(BloodGlucoseRepository::class.java)
         val testFlow = MutableStateFlow<List<BloodGlucoseRecordModel>>(listOf())
@@ -199,7 +214,7 @@ class BloodGlucoseRecordsViewModelTest{
                 ConverMmollToMgDlUseCaseImpl(),
                 ParseFromLanguageFormatUseCaseImpl()
             ),
-            ValidateGlucoseInputUseCaseImpl(SanitizeDecimalNumberUseCaseImpl())
+            ValidateGlucoseInputUseCaseImpl(SanitizeDecimalNumberUseCaseImpl(decimalSeparatorForCurrentLocaleUseCase),decimalSeparatorForCurrentLocaleUseCase)
         )
 
         //act
@@ -234,7 +249,7 @@ class BloodGlucoseRecordsViewModelTest{
                 ConverMmollToMgDlUseCaseImpl(),
                 ParseFromLanguageFormatUseCaseImpl()
             ),
-            ValidateGlucoseInputUseCaseImpl(SanitizeDecimalNumberUseCaseImpl())
+            ValidateGlucoseInputUseCaseImpl(SanitizeDecimalNumberUseCaseImpl(decimalSeparatorForCurrentLocaleUseCase),decimalSeparatorForCurrentLocaleUseCase)
         )
 
         //act
@@ -274,7 +289,7 @@ class BloodGlucoseRecordsViewModelTest{
                 ConverMmollToMgDlUseCaseImpl(),
                 ParseFromLanguageFormatUseCaseImpl()
             ),
-            ValidateGlucoseInputUseCaseImpl(SanitizeDecimalNumberUseCaseImpl())
+            ValidateGlucoseInputUseCaseImpl(SanitizeDecimalNumberUseCaseImpl(decimalSeparatorForCurrentLocaleUseCase),decimalSeparatorForCurrentLocaleUseCase)
         )
 
         //act
