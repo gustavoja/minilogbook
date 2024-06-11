@@ -22,7 +22,7 @@ class ValidateGlucoseInputUseCaseImplTest {
     }
 
     @Test
-    fun invoke_validInput_returnsProcessedValueAndTrue() {
+    fun  whenUseCaseExecuted_ExpectReturnProcessedValueAndTrue () {
         val currentValue = "123"
         val newValue = "4"
         val expectedProcessedValue = "1234"
@@ -36,7 +36,7 @@ class ValidateGlucoseInputUseCaseImplTest {
     }
 
     @Test
-    fun invoke_emptyInput_returnsEmptyValueAndFalse() {
+    fun whenUseCaseExecuted_WithEmptyInput_ExpectReturnEmptyAndValidFalse() {
         val currentValue = ""
         val newValue = ""
 
@@ -49,7 +49,7 @@ class ValidateGlucoseInputUseCaseImplTest {
     }
 
     @Test
-    fun invoke_onlyDecimalSeparator_returnsDecimalSeparatorAndFalse() {
+    fun whenUseCaseExecuted_WithOnlyDecimalSeparator_ExpectSeparatorAndValidFalse() {
         val currentValue = ""
         val newValue = "."
 

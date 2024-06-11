@@ -4,12 +4,11 @@ import java.text.DecimalFormat
 import java.util.Locale
 
 interface ParseFromCurrentLanguageFormatUseCase {
-    operator fun invoke (value: String): Float
+    operator fun invoke (value: String, locale: Locale=Locale.getDefault()): Float
 }
 
-class ParseFromCurrentLanguageFormatUseCaseImpl:ParseFromCurrentLanguageFormatUseCase {
-    override operator fun invoke (stringDecimalNumber: String): Float {
-        val locale = Locale.getDefault()
+class ParseFromLanguageFormatUseCaseImpl:ParseFromCurrentLanguageFormatUseCase {
+    override operator fun invoke (stringDecimalNumber: String, locale: Locale): Float {
         val decimalFormat = DecimalFormat.getInstance(locale)
         return decimalFormat.parse(stringDecimalNumber).toFloat()
     }

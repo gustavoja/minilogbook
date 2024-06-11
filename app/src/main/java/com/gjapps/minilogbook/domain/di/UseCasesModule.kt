@@ -10,7 +10,7 @@ import com.gjapps.minilogbook.domain.usecases.ConvertToCurrentLanguageDateFormat
 import com.gjapps.minilogbook.domain.usecases.ConvertToCurrentLanguageFormatUseCase
 import com.gjapps.minilogbook.domain.usecases.ConvertToCurrentLanguageFormatUseCaseImpl
 import com.gjapps.minilogbook.domain.usecases.ParseFromCurrentLanguageFormatUseCase
-import com.gjapps.minilogbook.domain.usecases.ParseFromCurrentLanguageFormatUseCaseImpl
+import com.gjapps.minilogbook.domain.usecases.ParseFromLanguageFormatUseCaseImpl
 import com.gjapps.minilogbook.domain.usecases.SanitizeDecimalNumberUseCase
 import com.gjapps.minilogbook.domain.usecases.SanitizeDecimalNumberUseCaseImpl
 import com.gjapps.minilogbook.domain.usecases.ValidateGlucoseInputUseCase
@@ -46,7 +46,7 @@ object UseCasesModule {
     @ViewModelScoped
     @Provides
     fun providesConvertFromCurrentLanguageDecimalFormatUseCase() : ParseFromCurrentLanguageFormatUseCase {
-        return ParseFromCurrentLanguageFormatUseCaseImpl()
+        return ParseFromLanguageFormatUseCaseImpl()
     }
 
     @ViewModelScoped
