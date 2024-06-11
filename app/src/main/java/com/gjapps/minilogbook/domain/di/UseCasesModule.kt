@@ -1,7 +1,7 @@
 package com.gjapps.minilogbook.domain.di
 
-import com.gjapps.minilogbook.domain.usecases.ConverMgDlToMmollUseCase
-import com.gjapps.minilogbook.domain.usecases.ConverMgDlToMmollUseCaseImpl
+import com.gjapps.minilogbook.domain.usecases.ConvertMgDlToMmollUseCase
+import com.gjapps.minilogbook.domain.usecases.ConvertMgDlToMmollUseCaseImpl
 import com.gjapps.minilogbook.domain.usecases.ConverMmollToMgDlUseCase
 import com.gjapps.minilogbook.domain.usecases.ConverMmollToMgDlUseCaseImpl
 import com.gjapps.minilogbook.domain.usecases.ConvertBloodGlucoseUnitUseCase
@@ -57,8 +57,8 @@ object UseCasesModule {
 
     @ViewModelScoped
     @Provides
-    fun providesConverMgDlToMmollUseCase() : ConverMgDlToMmollUseCase {
-        return ConverMgDlToMmollUseCaseImpl()
+    fun providesConverMgDlToMmollUseCase() : ConvertMgDlToMmollUseCase {
+        return ConvertMgDlToMmollUseCaseImpl()
     }
 
     @ViewModelScoped
@@ -69,7 +69,7 @@ object UseCasesModule {
 
     @ViewModelScoped
     @Provides
-    fun providesConvertBloodGlucoseUnit(converMgDlToMmoll:ConverMgDlToMmollUseCase,
+    fun providesConvertBloodGlucoseUnit(converMgDlToMmoll:ConvertMgDlToMmollUseCase,
                                         convertMmollToMgDl:ConverMmollToMgDlUseCase,
                                         convertFromCurrentLanguageDecimalFormat: ParseFromCurrentLanguageFormatUseCase) : ConvertBloodGlucoseUnitUseCase {
         return ConvertBloodGlucoseUnitUseCaseUseCaseImpl(converMgDlToMmoll,convertMmollToMgDl,convertFromCurrentLanguageDecimalFormat)
