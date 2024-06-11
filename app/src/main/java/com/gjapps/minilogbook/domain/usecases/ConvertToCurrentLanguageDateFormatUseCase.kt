@@ -4,11 +4,11 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
-interface DateToLocaleStringFormatUseCase {
+interface ConvertToCurrentLanguageDateFormatUseCase {
     operator fun invoke (date: Date, locale: Locale = Locale.getDefault()): String
 }
 
-class DateToLocaleStringFormatUseCaseImpl:DateToLocaleStringFormatUseCase {
+class ConvertToCurrentLanguageDateFormatUseCaseImpl:ConvertToCurrentLanguageDateFormatUseCase {
     override operator fun invoke (date: Date, locale: Locale): String {
         val dateTimePattern = (SimpleDateFormat.getDateTimeInstance(
             SimpleDateFormat.MEDIUM,

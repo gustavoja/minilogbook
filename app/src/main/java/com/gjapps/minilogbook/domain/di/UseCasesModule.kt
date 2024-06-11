@@ -4,14 +4,18 @@ import com.gjapps.minilogbook.domain.usecases.ConverMgDlToMmollUseCase
 import com.gjapps.minilogbook.domain.usecases.ConverMgDlToMmollUseCaseImpl
 import com.gjapps.minilogbook.domain.usecases.ConverMmollToMgDlUseCase
 import com.gjapps.minilogbook.domain.usecases.ConverMmollToMgDlUseCaseImpl
-import com.gjapps.minilogbook.domain.usecases.ConvertFromCurrentLanguageDecimalFormatUseCase
-import com.gjapps.minilogbook.domain.usecases.ConvertFromCurrentLanguageDecimalFormatUseCaseImpl
-import com.gjapps.minilogbook.domain.usecases.ConvertToCurrentLanguageDecimalFormatUseCase
-import com.gjapps.minilogbook.domain.usecases.ConvertToCurrentLanguageDecimalFormatUseCaseImpl
-import com.gjapps.minilogbook.domain.usecases.DateToLocaleStringFormatUseCase
-import com.gjapps.minilogbook.domain.usecases.DateToLocaleStringFormatUseCaseImpl
+import com.gjapps.minilogbook.domain.usecases.ConvertBloodGlucoseUnitUseCase
+import com.gjapps.minilogbook.domain.usecases.ConvertBloodGlucoseUnitUseCaseUseCaseImpl
+import com.gjapps.minilogbook.domain.usecases.ConvertToCurrentLanguageDateFormatUseCase
+import com.gjapps.minilogbook.domain.usecases.ConvertToCurrentLanguageFormatUseCase
+import com.gjapps.minilogbook.domain.usecases.ConvertToCurrentLanguageFormatUseCaseImpl
+import com.gjapps.minilogbook.domain.usecases.ParseFromCurrentLanguageFormatUseCase
+import com.gjapps.minilogbook.domain.usecases.ParseFromCurrentLanguageFormatUseCaseImpl
 import com.gjapps.minilogbook.domain.usecases.SanitizeDecimalNumberUseCase
 import com.gjapps.minilogbook.domain.usecases.SanitizeDecimalNumberUseCaseImpl
+import com.gjapps.minilogbook.domain.usecases.ValidateGlucoseInputUseCase
+import com.gjapps.minilogbook.domain.usecases.ValidateGlucoseInputUseCaseImpl
+import com.gjapps.minilogbook.domain.usecases.ConvertToCurrentLanguageDateFormatUseCaseImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -29,20 +33,20 @@ object UseCasesModule {
 
     @ViewModelScoped
     @Provides
-    fun providesDateToLocaleStringFormatUseCase() : DateToLocaleStringFormatUseCase {
-        return DateToLocaleStringFormatUseCaseImpl()
+    fun providesDateToLocaleStringFormatUseCase() : ConvertToCurrentLanguageDateFormatUseCase {
+        return ConvertToCurrentLanguageDateFormatUseCaseImpl()
     }
 
     @ViewModelScoped
     @Provides
-    fun providesConvertToCurrentLanguageDecimalFormatUseCase() : ConvertToCurrentLanguageDecimalFormatUseCase {
-        return ConvertToCurrentLanguageDecimalFormatUseCaseImpl()
+    fun providesConvertToCurrentLanguageDecimalFormatUseCase() : ConvertToCurrentLanguageFormatUseCase {
+        return ConvertToCurrentLanguageFormatUseCaseImpl()
     }
 
     @ViewModelScoped
     @Provides
-    fun providesConvertFromCurrentLanguageDecimalFormatUseCase() : ConvertFromCurrentLanguageDecimalFormatUseCase {
-        return ConvertFromCurrentLanguageDecimalFormatUseCaseImpl()
+    fun providesConvertFromCurrentLanguageDecimalFormatUseCase() : ParseFromCurrentLanguageFormatUseCase {
+        return ParseFromCurrentLanguageFormatUseCaseImpl()
     }
 
     @ViewModelScoped
@@ -57,4 +61,17 @@ object UseCasesModule {
         return ConverMgDlToMmollUseCaseImpl()
     }
 
+    @ViewModelScoped
+    @Provides
+    fun providesValidateGlucoseInputUseCase(sanitizeDecimalNumberUseCase:SanitizeDecimalNumberUseCase) : ValidateGlucoseInputUseCase {
+        return ValidateGlucoseInputUseCaseImpl(sanitizeDecimalNumberUseCase)
+    }
+
+    @ViewModelScoped
+    @Provides
+    fun providesConvertBloodGlucoseUnit(converMgDlToMmoll:ConverMgDlToMmollUseCase,
+                                        convertMmollToMgDl:ConverMmollToMgDlUseCase,
+                                        convertFromCurrentLanguageDecimalFormat: ParseFromCurrentLanguageFormatUseCase) : ConvertBloodGlucoseUnitUseCase {
+        return ConvertBloodGlucoseUnitUseCaseUseCaseImpl(converMgDlToMmoll,convertMmollToMgDl,convertFromCurrentLanguageDecimalFormat)
+    }
 }

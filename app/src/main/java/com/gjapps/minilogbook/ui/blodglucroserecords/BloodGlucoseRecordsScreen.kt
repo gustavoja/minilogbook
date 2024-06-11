@@ -38,7 +38,7 @@ fun BloodGlucoseRecordsScreen(
     val state by viewModel.uiState.collectAsStateWithLifecycle(lifecycleOwner = androidx.compose.ui.platform.LocalLifecycleOwner.current)
 
     LaunchedEffect(Unit) {
-        viewModel.onViewResumed()
+        viewModel.onViewReady()
     }
     BloodGlucoseRecordsScreen(state, viewModel::onFilterChanged, viewModel::onNewRecordValueChanged, viewModel::onSaveRecordValue,viewModel::onDeletedRecords,modifier)
 }

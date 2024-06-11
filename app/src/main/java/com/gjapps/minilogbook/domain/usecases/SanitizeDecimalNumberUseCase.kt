@@ -10,13 +10,16 @@ interface SanitizeDecimalNumberUseCase {
 class SanitizeDecimalNumberUseCaseImpl : SanitizeDecimalNumberUseCase {
     override fun invoke(currentValue: String, newValue: String): String {
         val decimalSeparator = getDecimalSeparatorForCurrentLocale()
+
+        val newValue = newValue.replace('.', decimalSeparator).replace(',', decimalSeparator)
+
         if(newValue.count { it == decimalSeparator } > 1)
             return currentValue
 
         return removeNonDigitsExceptDecimalSeparators(newValue)
     }
 
-    fun removeNonDigitsExceptDecimalSeparators(input: String): String {
+    private fun removeNonDigitsExceptDecimalSeparators(input: String): String {
         val decimalSeparator = getDecimalSeparatorForCurrentLocale()
         return input.filter { it.isDigit() || it == decimalSeparator}
     }

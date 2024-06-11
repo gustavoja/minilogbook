@@ -3,15 +3,15 @@ package com.gjapps.minilogbook.domain.usecases
 import java.text.DecimalFormat
 import java.util.Locale
 
-interface ConvertToCurrentLanguageDecimalFormatUseCase {
+interface ConvertToCurrentLanguageFormatUseCase {
     operator fun invoke(value: Float): String
 }
 
-class ConvertToCurrentLanguageDecimalFormatUseCaseImpl: ConvertToCurrentLanguageDecimalFormatUseCase {
-    override operator fun invoke(value: Float): String {
+class ConvertToCurrentLanguageFormatUseCaseImpl: ConvertToCurrentLanguageFormatUseCase {
+    override operator fun invoke(decimalNumber: Float): String {
         val locale = Locale.getDefault()
         val decimalFormat = DecimalFormat.getInstance(locale)
         decimalFormat.maximumFractionDigits = 4
-        return decimalFormat.format(value)
+        return decimalFormat.format(decimalNumber)
     }
 }
