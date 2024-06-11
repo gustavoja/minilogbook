@@ -79,12 +79,35 @@ dependencies {
     implementation(libs.androidx.room.ktx)
     kapt(libs.androidx.room.compiler)
 
+    //tests
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.ui.test.junit4)
+    kapt(libs.androidx.room.compiler)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+
+    //mockito
+    testImplementation(libs.mockito.core)
+    testImplementation(libs.mockito.kotlin)
+
+    //jupiter
+    testImplementation(libs.jupiter.core)
+    testImplementation(libs.jupiter.params)
+    testImplementation(libs.jupiter.api)
+    testImplementation(libs.jupiter.engine)
+
+    //coroutines
+    implementation(libs.jetbrains.coroutines.core)
+    implementation(libs.jetbrains.coroutines.android)
+    implementation(libs.jetbrains.coroutines.test)
+
+    //turbine
+    implementation(libs.turbine)
+
+    //strikt
+    implementation(libs.strikt)
 
 }
