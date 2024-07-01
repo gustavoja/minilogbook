@@ -18,6 +18,8 @@ import org.mockito.Mockito.`when`
 import org.mockito.kotlin.any
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
+import strikt.api.expectThat
+import strikt.assertions.isEqualTo
 import java.text.SimpleDateFormat
 
 class BloodGlucoseRepositoryImplTest {
@@ -65,7 +67,7 @@ class BloodGlucoseRepositoryImplTest {
         val actualAverage = repository.bloodGlucoseAverage.first()
 
         //assert
-        expectedAverage.equals(actualAverage)
+        expectThat(expectedAverage).isEqualTo(actualAverage)
     }
 
     @Test

@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.mock
 import strikt.api.expectThat
+import strikt.assertions.isEqualTo
 
 class SanitizeDecimalNumberUseCaseImplTest{
 
@@ -27,7 +28,7 @@ class SanitizeDecimalNumberUseCaseImplTest{
 
         val result = sanitizeDecimalNumberUseCase(currentValue, newValue)
 
-        expectThat(expectedResult).equals(result)
+        expectThat(expectedResult).isEqualTo(result)
     }
 
     @Test
@@ -38,7 +39,7 @@ class SanitizeDecimalNumberUseCaseImplTest{
 
         val result = sanitizeDecimalNumberUseCase(currentValue, newValue)
 
-        expectThat(expectedResult).equals(result)
+        expectThat(expectedResult).isEqualTo(result)
     }
 
     @Test
@@ -49,7 +50,7 @@ class SanitizeDecimalNumberUseCaseImplTest{
 
         val result = sanitizeDecimalNumberUseCase(currentValue, newValue)
 
-        expectThat(expectedResult).equals(result)
+        expectThat(expectedResult).isEqualTo(result)
     }
 
     @Test
@@ -59,7 +60,7 @@ class SanitizeDecimalNumberUseCaseImplTest{
 
         val result = sanitizeDecimalNumberUseCase(currentValue, newValue)
 
-        expectThat(currentValue).equals(result)
+        expectThat(currentValue).isEqualTo(result)
     }
 
     @Test
@@ -70,6 +71,6 @@ class SanitizeDecimalNumberUseCaseImplTest{
 
         val result = sanitizeDecimalNumberUseCase(currentValue, newValue)
 
-        expectThat(expectedResult).equals(result)
+        expectThat(expectedResult).isEqualTo(result)
     }
 }

@@ -46,7 +46,7 @@ class BloodGlucoseRecordsViewModelTest{
     @Before
     fun setup() {
         Dispatchers.setMain(UnconfinedTestDispatcher())
-        bloodGlucoseRepositoryMock = setupBloodRecordsRepositoryMock();
+        bloodGlucoseRepositoryMock = setupBloodRecordsRepositoryMock()
 
         createViewModel()
     }
@@ -113,7 +113,7 @@ class BloodGlucoseRecordsViewModelTest{
         verify(bloodGlucoseRepositoryMock, Mockito.times(1)).saveRecord(1f)
         viewModel.uiState.test {
             val item = awaitItem()
-            expectThat(item.newRecordUserInputValue).equals("")
+            expectThat(item.newRecordUserInputValue).isEqualTo("")
             expectNoEvents()
         }
     }
@@ -126,7 +126,7 @@ class BloodGlucoseRecordsViewModelTest{
         //assert
         viewModel.uiState.test {
             val item = awaitItem()
-            expectThat(item.newRecordUserInputValue).equals("1")
+            expectThat(item.newRecordUserInputValue).isEqualTo("1")
             expectNoEvents()
         }
     }
@@ -139,7 +139,7 @@ class BloodGlucoseRecordsViewModelTest{
         //assert
         viewModel.uiState.test {
             val item = awaitItem()
-            expectThat(item.newRecordUserInputValue).equals("1")
+            expectThat(item.newRecordUserInputValue).isEqualTo("1")
             expectNoEvents()
         }
     }
@@ -199,13 +199,13 @@ class BloodGlucoseRecordsViewModelTest{
     @Test
     fun whenRecordListEmittedFromTheRepo_ExpectThatUiStateIsUpdatedWithTheTasksEmitted() = runTest{
         //arrange
-        var bloodGlucoseRepositoryMock = mock(BloodGlucoseRepository::class.java)
+        val bloodGlucoseRepositoryMock = mock(BloodGlucoseRepository::class.java)
         val testFlow = MutableStateFlow<List<BloodGlucoseRecordModel>>(listOf())
         `when`(bloodGlucoseRepositoryMock.bloodGlucoseRecords).thenReturn(testFlow)
         val bloodGlucoseAverageFlowMock = mock<Flow<Float>>()
         `when`(bloodGlucoseRepositoryMock.bloodGlucoseAverage).thenReturn(bloodGlucoseAverageFlowMock)
 
-        var viewModel = BloodGlucoseRecordsViewModel(
+        val viewModel = BloodGlucoseRecordsViewModel(
             bloodGlucoseRepositoryMock,
             ConvertToCurrentLanguageDateFormatUseCaseImpl(),
             ConvertToCurrentLanguageFormatUseCaseImpl(),
@@ -234,13 +234,13 @@ class BloodGlucoseRecordsViewModelTest{
     @Test
     fun whenSelectedUnitChanged_ExpectThatTheUnitOnRecordIsTransformed() = runTest{
         //arrange
-        var bloodGlucoseRepositoryMock = mock(BloodGlucoseRepository::class.java)
+        val bloodGlucoseRepositoryMock = mock(BloodGlucoseRepository::class.java)
         val testFlow = MutableStateFlow<List<BloodGlucoseRecordModel>>(listOf())
         `when`(bloodGlucoseRepositoryMock.bloodGlucoseRecords).thenReturn(testFlow)
         val bloodGlucoseAverageFlowMock = mock<Flow<Float>>()
         `when`(bloodGlucoseRepositoryMock.bloodGlucoseAverage).thenReturn(bloodGlucoseAverageFlowMock)
 
-        var viewModel = BloodGlucoseRecordsViewModel(
+        val viewModel = BloodGlucoseRecordsViewModel(
             bloodGlucoseRepositoryMock,
             ConvertToCurrentLanguageDateFormatUseCaseImpl(),
             ConvertToCurrentLanguageFormatUseCaseImpl(),
@@ -274,13 +274,13 @@ class BloodGlucoseRecordsViewModelTest{
     @Test
     fun whenAverageEmittedFromTheRepo_ExpectThatUiStateIsUpdatedWithTheTheNewAverage() = runTest{
         //arrange
-        var bloodGlucoseRepositoryMock = mock(BloodGlucoseRepository::class.java)
+        val bloodGlucoseRepositoryMock = mock(BloodGlucoseRepository::class.java)
         val testFlow = MutableStateFlow<List<BloodGlucoseRecordModel>>(listOf())
         `when`(bloodGlucoseRepositoryMock.bloodGlucoseRecords).thenReturn(testFlow)
-        val bloodGlucoseAverageFlowMock = MutableStateFlow<Float>(0f)
+        val bloodGlucoseAverageFlowMock = MutableStateFlow(0f)
         `when`(bloodGlucoseRepositoryMock.bloodGlucoseAverage).thenReturn(bloodGlucoseAverageFlowMock)
 
-        var viewModel = BloodGlucoseRecordsViewModel(
+        val viewModel = BloodGlucoseRecordsViewModel(
             bloodGlucoseRepositoryMock,
             ConvertToCurrentLanguageDateFormatUseCaseImpl(),
             ConvertToCurrentLanguageFormatUseCaseImpl(),

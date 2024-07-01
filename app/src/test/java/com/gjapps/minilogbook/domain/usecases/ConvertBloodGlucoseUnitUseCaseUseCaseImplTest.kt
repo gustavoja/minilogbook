@@ -6,6 +6,7 @@ import org.junit.Test
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.whenever
 import strikt.api.expectThat
+import strikt.assertions.isEqualTo
 import java.util.Locale
 
 class ConvertBloodGlucoseUnitUseCaseUseCaseImplTest{
@@ -34,7 +35,7 @@ fun whenUseCaseExecuted_WithMgdlToMgdl_ExpectReturnTheSameValue() {
 
     val result = useCase(inputValue, fromUnit, toUnit)
 
-    expectThat(inputValue).equals(result)
+    expectThat(inputValue).isEqualTo(result)
 }
 
 @Test
@@ -45,7 +46,7 @@ fun whenUseCaseExecuted_WithMmolToMmol_ExpectReturnTheSameValue() {
 
     val result = useCase(inputValue, fromUnit, toUnit)
 
-    expectThat(inputValue).equals(result)
+    expectThat(inputValue).isEqualTo(result)
 }
 
 @Test
@@ -59,7 +60,7 @@ fun whenUseCaseExecuted_WithMgdlToMmol_ExpectCallsConvertMgDlToMmoll() {
 
     val result = useCase(inputValue, fromUnit, toUnit)
 
-    expectThat(expectedResult).equals(result)
+    expectThat(expectedResult).isEqualTo(result)
 }
 
 @Test
@@ -73,7 +74,7 @@ fun whenUseCaseExecuted_WithMgdlToMmol_ExpectCallsConvertMmollToMgDl() {
 
     val result = useCase(inputValue, fromUnit, toUnit)
 
-    expectThat(expectedResult).equals(result)
+    expectThat(expectedResult).isEqualTo(result)
 }
 
 @Test
@@ -89,6 +90,6 @@ fun whenUseCaseExecuted_WithMgdlToMmol_ExpectCallsParseFromCurrentLanguageFormat
 
     val result = useCase(inputValue, fromUnit, toUnit)
 
-    expectThat(expectedResult).equals(result)
+    expectThat(expectedResult).isEqualTo(result)
 }
 }

@@ -2,13 +2,14 @@ package com.gjapps.minilogbook.domain.usecases
 
 import org.junit.Test
 import strikt.api.expectThat
+import strikt.assertions.isEqualTo
 
 class ConvertMmollToMgDlUseCaseImplTest {
     @Test
     fun whenExecuted_ExpectValueTransformedCorrectly() {
         //act
-        val result = ConvertMgDlToMmollUseCaseImpl().invoke(1f)
+        val result = ConverMmollToMgDlUseCaseImpl().invoke(1f)
         //assert
-        expectThat(result).equals(18.0182f)
+        expectThat(result).isEqualTo(18.0182f)
     }
 }
