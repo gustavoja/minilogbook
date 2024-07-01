@@ -37,7 +37,7 @@ class BloodGlucoseRecordsViewModel @Inject constructor(private val bloodGlucoseR
     private var bloodGlucoseAverageSubscription : Job? = null
 
     private val exceptionHandler=CoroutineExceptionHandler { _, exception ->
-        Log.e("BloodGlucoseRecordsViewModel", exception.message, exception)
+        Log.e(TAG, exception.message, exception)
         _uiState.update {
             it.copy(recordsState = BloodGlucoseRecordsListUIState.Error)
         }
@@ -157,6 +157,10 @@ class BloodGlucoseRecordsViewModel @Inject constructor(private val bloodGlucoseR
             val convertedValue = convertBloodGlucoseUnit(_uiState.value.newRecordUserInputValue,fromUnit,toUnit)
             onNewRecordValueChanged(convertToCurrentLanguageDecimalFormat(convertedValue))
         }
+    }
+
+    companion object {
+        private const val TAG = "BloodGlucoseRecordsViewModel"
     }
 }
 
