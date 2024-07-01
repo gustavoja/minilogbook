@@ -13,7 +13,7 @@ class ConvertToCurrentLanguageDateFormatUseCaseImpl:ConvertToCurrentLanguageDate
         val dateTimePattern = (SimpleDateFormat.getDateTimeInstance(
             SimpleDateFormat.MEDIUM,
             SimpleDateFormat.MEDIUM, locale) as SimpleDateFormat).toLocalizedPattern()
-        val formatter = SimpleDateFormat(dateTimePattern)
+        val formatter = SimpleDateFormat(dateTimePattern,Locale.getDefault())
         return formatter.format(date)
     }
 }

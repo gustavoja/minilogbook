@@ -31,7 +31,7 @@ class ParseFromCurrentLanguageFormatUseCaseImplTest{
     }
 
     @Test(expected = ParseException::class)
-    fun whenUseCaseExecuted_ExpectExceptionThrownOnNonParseableString() {
+    fun whenUseCaseExecuted_ExpectExceptionThrownOnNonParsableString() {
         val inputString = "abc"
         val locale = Locale.US
 

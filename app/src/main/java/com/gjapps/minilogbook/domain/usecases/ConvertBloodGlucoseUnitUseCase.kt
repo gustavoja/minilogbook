@@ -8,7 +8,7 @@ interface ConvertBloodGlucoseUnitUseCase {
 }
 
 class ConvertBloodGlucoseUnitUseCaseUseCaseImpl(private val convertMgDlToMmoll:ConvertMgDlToMmollUseCase,
-                                                private val convertMmollToMgDl:ConverMmollToMgDlUseCase,
+                                                private val convertMmollToMgDl:ConvertMmollToMgDlUseCase,
                                                 private val convertFromCurrentLanguageDecimalFormat: ParseFromCurrentLanguageFormatUseCase) : ConvertBloodGlucoseUnitUseCase{
     override operator fun invoke(value: Float, fromUnit: BloodGlucoseUnit, toUnit: BloodGlucoseUnit): Float {
         return when (toUnit) {

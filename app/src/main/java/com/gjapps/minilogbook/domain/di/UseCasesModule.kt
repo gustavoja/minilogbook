@@ -1,11 +1,11 @@
 package com.gjapps.minilogbook.domain.di
 
-import com.gjapps.minilogbook.domain.usecases.ConverMmollToMgDlUseCase
-import com.gjapps.minilogbook.domain.usecases.ConverMmollToMgDlUseCaseImpl
 import com.gjapps.minilogbook.domain.usecases.ConvertBloodGlucoseUnitUseCase
 import com.gjapps.minilogbook.domain.usecases.ConvertBloodGlucoseUnitUseCaseUseCaseImpl
 import com.gjapps.minilogbook.domain.usecases.ConvertMgDlToMmollUseCase
 import com.gjapps.minilogbook.domain.usecases.ConvertMgDlToMmollUseCaseImpl
+import com.gjapps.minilogbook.domain.usecases.ConvertMmollToMgDlUseCase
+import com.gjapps.minilogbook.domain.usecases.ConvertMmollToMgDlUseCaseImpl
 import com.gjapps.minilogbook.domain.usecases.ConvertToCurrentLanguageDateFormatUseCase
 import com.gjapps.minilogbook.domain.usecases.ConvertToCurrentLanguageDateFormatUseCaseImpl
 import com.gjapps.minilogbook.domain.usecases.ConvertToCurrentLanguageFormatUseCase
@@ -53,13 +53,13 @@ object UseCasesModule {
 
     @ViewModelScoped
     @Provides
-    fun providesConvertMmollToMgDlUseCase() : ConverMmollToMgDlUseCase {
-        return ConverMmollToMgDlUseCaseImpl()
+    fun providesConvertMmollToMgDlUseCase() : ConvertMmollToMgDlUseCase {
+        return ConvertMmollToMgDlUseCaseImpl()
     }
 
     @ViewModelScoped
     @Provides
-    fun providesConverMgDlToMmollUseCase() : ConvertMgDlToMmollUseCase {
+    fun providesConvertMgDlToMmollUseCase() : ConvertMgDlToMmollUseCase {
         return ConvertMgDlToMmollUseCaseImpl()
     }
 
@@ -71,10 +71,10 @@ object UseCasesModule {
 
     @ViewModelScoped
     @Provides
-    fun providesConvertBloodGlucoseUnit(converMgDlToMmoll:ConvertMgDlToMmollUseCase,
-                                        convertMmollToMgDl:ConverMmollToMgDlUseCase,
+    fun providesConvertBloodGlucoseUnit(convertMgDlToMmoll:ConvertMgDlToMmollUseCase,
+                                        convertMmollToMgDl:ConvertMmollToMgDlUseCase,
                                         convertFromCurrentLanguageDecimalFormat: ParseFromCurrentLanguageFormatUseCase) : ConvertBloodGlucoseUnitUseCase {
-        return ConvertBloodGlucoseUnitUseCaseUseCaseImpl(converMgDlToMmoll,convertMmollToMgDl,convertFromCurrentLanguageDecimalFormat)
+        return ConvertBloodGlucoseUnitUseCaseUseCaseImpl(convertMgDlToMmoll,convertMmollToMgDl,convertFromCurrentLanguageDecimalFormat)
     }
 
     @ViewModelScoped

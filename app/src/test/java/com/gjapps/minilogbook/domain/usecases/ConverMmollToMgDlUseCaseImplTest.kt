@@ -8,7 +8,7 @@ class ConvertMmollToMgDlUseCaseImplTest {
     @Test
     fun whenExecuted_ExpectValueTransformedCorrectly() {
         //act
-        val result = ConverMmollToMgDlUseCaseImpl().invoke(1f)
+        val result = ConvertMmollToMgDlUseCaseImpl().invoke(1f)
         //assert
         expectThat(result).isEqualTo(18.0182f)
     }

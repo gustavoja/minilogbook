@@ -115,10 +115,10 @@ class BloodGlucoseRecordsViewModel @Inject constructor(private val bloodGlucoseR
         if(newRecord.isEmpty() || !uiState.value.isValidNewRecordInput)
             return
 
-        if(saveRecord(newRecord))
-            _uiState.update {
-                it.copy(newRecordUserInputValue = "",isValidNewRecordInput = false)
-            }
+        saveRecord(newRecord)
+        _uiState.update {
+            it.copy(newRecordUserInputValue = "",isValidNewRecordInput = false)
+        }
     }
 
     fun onDeletedRecords() {
@@ -144,14 +144,12 @@ class BloodGlucoseRecordsViewModel @Inject constructor(private val bloodGlucoseR
         }
     }
 
-    private fun saveRecord(value: String):Boolean
+    private fun saveRecord(value: String)
     {
         viewModelScope.launch(exceptionHandler) {
             val convertedValue = convertBloodGlucoseUnit(value,uiState.value.selectedUnit,BloodGlucoseUnit.Mgdl)
             bloodGlucoseRecordsRepository.saveRecord(convertedValue)
         }
-
-        return true
     }
 
     private fun reloadNewRecordUserInput(fromUnit: BloodGlucoseUnit,toUnit: BloodGlucoseUnit) {

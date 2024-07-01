@@ -1,7 +1,7 @@
 package com.gjapps.minilogbook.domain.usecases
 
 import org.junit.Before
-import org.junit.jupiter.api.Test
+import org.junit.Test
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.mock
 import strikt.api.expectThat

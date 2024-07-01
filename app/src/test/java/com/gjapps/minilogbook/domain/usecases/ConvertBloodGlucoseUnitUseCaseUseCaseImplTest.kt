@@ -11,7 +11,7 @@ import java.util.Locale
 
 class ConvertBloodGlucoseUnitUseCaseUseCaseImplTest{
 private lateinit var convertMgDlToMmoll: ConvertMgDlToMmollUseCase
-private lateinit var convertMmollToMgDl: ConverMmollToMgDlUseCase
+private lateinit var convertMmollToMgDl: ConvertMmollToMgDlUseCase
 private lateinit var convertFromCurrentLanguageDecimalFormat: ParseFromCurrentLanguageFormatUseCase
 private lateinit var useCase: ConvertBloodGlucoseUnitUseCaseUseCaseImpl
 
