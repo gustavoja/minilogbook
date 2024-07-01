@@ -23,7 +23,7 @@ class SanitizeDecimalNumberUseCaseImplTest{
     @Test
     fun whenUseCaseExecuted_WithValidNumber_ExpectNewValueAdded() {
         val currentValue = "123"
-        val newValue = "4"
+        val newValue = "1234"
         val expectedResult = "1234"
 
         val result = sanitizeDecimalNumberUseCase(currentValue, newValue)
@@ -33,8 +33,8 @@ class SanitizeDecimalNumberUseCaseImplTest{
 
     @Test
     fun whenUseCaseExecuted_WithValidSeparator_ExpectNewValueAdded() {
-        val currentValue = "123"
-        val newValue = "4.5"
+        val currentValue = "1234"
+        val newValue = "1234.5"
         val expectedResult = "1234.5"
 
         val result = sanitizeDecimalNumberUseCase(currentValue, newValue)
@@ -45,32 +45,32 @@ class SanitizeDecimalNumberUseCaseImplTest{
     @Test
     fun whenUseCaseExecuted_WithCommaSeparator_ExpectNewValueAdded() {
         val currentValue = "123"
-        val newValue = "4,5"
-        val expectedResult = "1234.5"
+        val newValue = "123,4"
+        val expectedResult = "123.4"
 
         val result = sanitizeDecimalNumberUseCase(currentValue, newValue)
 
-        expectThat(expectedResult).isEqualTo(result)
+        expectThat(result).isEqualTo(expectedResult)
     }
 
     @Test
     fun whenUseCaseExecuted_WithMultipleDecimalSeparator_ExpectNewValueNotAdded() {
         val currentValue = "123.4"
-        val newValue = "5.6"
+        val newValue = "123.4."
 
         val result = sanitizeDecimalNumberUseCase(currentValue, newValue)
 
-        expectThat(currentValue).isEqualTo(result)
+        expectThat(result).isEqualTo(currentValue)
     }
 
     @Test
     fun whenUseCaseExecuted_WithOtherValues_ExpectInvalidValuesNotAdded() {
         val currentValue = "123"
-        val newValue = "a4b.5c"
+        val newValue = "123a4b.5c"
         val expectedResult = "1234.5"
 
         val result = sanitizeDecimalNumberUseCase(currentValue, newValue)
 
-        expectThat(expectedResult).isEqualTo(result)
+        expectThat(result ).isEqualTo(expectedResult)
     }
 }

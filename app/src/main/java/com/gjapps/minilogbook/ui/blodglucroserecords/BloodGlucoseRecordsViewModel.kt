@@ -52,7 +52,7 @@ class BloodGlucoseRecordsViewModel @Inject constructor(private val bloodGlucoseR
 
     private val bloodGlucoseRecordsListState = bloodGlucoseRecordsRepository
         .bloodGlucoseRecords
-        .combine(selectedBloodGlucoseUnitState){ list, unit ->
+        .combine(selectedBloodGlucoseUnitState){ list, _ ->
             val recordsUIStates = list.map { record -> BloodGlucoseRecordItemUIState(
                 convertToCurrentLanguageDecimalFormat(
                     convertBloodGlucoseUnit(record.mgdlValue,BloodGlucoseUnit.Mgdl,uiState.value.selectedUnit)
