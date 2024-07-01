@@ -9,8 +9,6 @@ import com.gjapps.minilogbook.data.datasources.storage.local.room.daos.BloodGluc
 import com.gjapps.minilogbook.data.datasources.storage.local.room.daos.BloodGlucoseRecordsOverviewDao
 import com.gjapps.minilogbook.data.repositories.BloodGlucoseRepository
 import com.gjapps.minilogbook.data.repositories.BloodGlucoseRepositoryImpl
-import com.gjapps.minilogbook.domain.usecases.DecimalSeparatorForCurrentLocaleUseCase
-import com.gjapps.minilogbook.domain.usecases.DecimalSeparatorForCurrentLocaleUseCaseImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

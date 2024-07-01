@@ -14,6 +14,6 @@ class DateTypeConverter {
 
     @TypeConverter
     fun dateToTimestamp(date: Date?): Long? {
-        return date?.toUTC()?.time?.toLong()
+        return date?.toUTC()?.time
     }
 }

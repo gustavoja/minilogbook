@@ -9,6 +9,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 
+@Suppress("unused")
 class MemoryStorage : StorageDataSource {
     private var records = mutableListOf<BloodGlucoseRecordEntity>()
     private val _bloodGlucoseRecords = MutableSharedFlow<List<BloodGlucoseRecordEntity>>(extraBufferCapacity = 1,replay = 1)
@@ -22,8 +23,8 @@ class MemoryStorage : StorageDataSource {
     override val bloodGlucoseAverage: StateFlow<Float>
         get() = _bloodGlucoseAverage.asStateFlow()
 
-    override suspend fun saveRecord(value: BloodGlucoseRecordEntity, newAverage:Float, newRecordsSum:Float,newRecordsCount:Int) {
-        records.add(value)
+    override suspend fun saveRecord(record: BloodGlucoseRecordEntity, newAverage:Float, newRecordsSum:Float, newRecordsCount:Int) {
+        records.add(record)
         _bloodGlucoseRecordsSum = newRecordsSum
         _bloodGlucoseRecordsCount = newRecordsCount
         _bloodGlucoseRecords.emit(records)

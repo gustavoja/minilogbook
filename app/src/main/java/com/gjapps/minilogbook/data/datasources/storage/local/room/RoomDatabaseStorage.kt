@@ -7,15 +7,13 @@ import com.gjapps.minilogbook.data.datasources.storage.local.room.daos.BloodGluc
 import com.gjapps.minilogbook.data.datasources.storage.local.room.daos.BloodGlucoseRecordsOverviewEntity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.firstOrNull
-import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 
 class RoomDatabaseStorage(private val bloodGlucoseRecordDao: BloodGlucoseRecordDao, private val bloodGlucoseRecordsOverviewDao: BloodGlucoseRecordsOverviewDao, private val appDatabase: AppDatabase) : StorageDataSource {
     override val bloodGlucoseAverage: Flow<Float>
-        get() =  bloodGlucoseRecordsOverviewDao.getFirst()?.map { it?.recordsAverage ?: 0f } ?: flowOf(0f)
+        get() = bloodGlucoseRecordsOverviewDao.getFirst().map { it.recordsAverage }
     override val bloodGlucoseRecords: Flow<List<BloodGlucoseRecordEntity>>
         get() =  bloodGlucoseRecordDao.getAll()
 
@@ -32,13 +30,13 @@ class RoomDatabaseStorage(private val bloodGlucoseRecordDao: BloodGlucoseRecordD
 
     override suspend fun getBloodGlucoseRecordsCount(): Int {
         return withContext(Dispatchers.IO){
-            bloodGlucoseRecordsOverviewDao.getFirst()?.first()?.recordsCount ?: 0
+            bloodGlucoseRecordsOverviewDao.getFirst().firstOrNull()?.recordsCount ?: 0
         }
     }
 
     override suspend fun getBloodGlucoseRecordsSum(): Float {
         return withContext(Dispatchers.IO){
-            bloodGlucoseRecordsOverviewDao.getFirst()?.first()?.recordsSum ?: 0f
+            bloodGlucoseRecordsOverviewDao.getFirst().firstOrNull()?.recordsSum ?: 0f
         }
     }
 
@@ -49,7 +47,7 @@ class RoomDatabaseStorage(private val bloodGlucoseRecordDao: BloodGlucoseRecordD
     }
 
     private suspend fun addOrUpdateOverview(newAverage: Float, newRecordsSum: Float, newRecordsCount:Int) {
-        var first = bloodGlucoseRecordsOverviewDao.getFirst()?.firstOrNull()
+        var first = bloodGlucoseRecordsOverviewDao.getFirst().firstOrNull()
         if (first == null) {
             first = BloodGlucoseRecordsOverviewEntity(
                 recordsAverage = newAverage,
@@ -58,7 +56,7 @@ class RoomDatabaseStorage(private val bloodGlucoseRecordDao: BloodGlucoseRecordD
             )
             bloodGlucoseRecordsOverviewDao.insert(first)
         } else {
-            var uid = first.uid
+            val uid = first.uid
             first = first.copy(recordsAverage = newAverage, recordsSum = newRecordsSum, recordsCount = newRecordsCount)
             first.uid = uid
             bloodGlucoseRecordsOverviewDao.update(first)

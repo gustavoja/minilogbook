@@ -18,7 +18,7 @@ class ConvertBloodGlucoseUnitUseCaseUseCaseImpl(private val convertMgDlToMmoll:C
     }
 
     override operator fun invoke(value:String,fromUnit: BloodGlucoseUnit,toUnit: BloodGlucoseUnit):Float{
-        var convertedValue = convertFromCurrentLanguageDecimalFormat(value)
+        val convertedValue = convertFromCurrentLanguageDecimalFormat(value)
         return invoke(convertedValue,fromUnit,toUnit)
     }
 }

@@ -117,7 +117,7 @@ fun BloodGlucoseRecordsWithRecordsScreenPreview(){
         Surface {
             BloodGlucoseRecordsScreen(state = BloodGlucoseRecordsUiState("150","mmol/L",false,
                 BloodGlucoseUnit.Mmoldl,recordsState = BloodGlucoseRecordsListUIState.WithBloodGlucoseRecords(listOf(
-                    BloodGlucoseRecordItemUIState("150.5","12/12/24",)
+                    BloodGlucoseRecordItemUIState("150.5","12/12/24")
                 ))), {}, {}, {}, {}, Modifier)
         }
     }

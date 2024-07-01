@@ -43,7 +43,7 @@ fun BloodGlucoseTopBar(
         average,
         selectedUnitName)
 
-    var displayDialog = remember {
+    val displayDialog = remember {
         mutableStateOf(false)
     }
 

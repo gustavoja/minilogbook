@@ -147,7 +147,7 @@ class BloodGlucoseRecordsViewModel @Inject constructor(private val bloodGlucoseR
     private fun saveRecord(value: String):Boolean
     {
         viewModelScope.launch(exceptionHandler) {
-            var convertedValue = convertBloodGlucoseUnit(value,uiState.value.selectedUnit,BloodGlucoseUnit.Mgdl)
+            val convertedValue = convertBloodGlucoseUnit(value,uiState.value.selectedUnit,BloodGlucoseUnit.Mgdl)
             bloodGlucoseRecordsRepository.saveRecord(convertedValue)
         }
 

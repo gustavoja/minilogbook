@@ -20,7 +20,7 @@ import com.gjapps.minilogbook.ui.theme.MiniLogbookTheme
 
 @Composable
 fun BloodGlucoseRecordsList(list: List<BloodGlucoseRecordItemUIState>, unitName: String, modifier: Modifier = Modifier) {
-    var listState = rememberLazyListState()
+    val listState = rememberLazyListState()
     Box(modifier = modifier.fillMaxSize().padding(20.dp))
     {
         LazyColumn(state = listState,modifier = Modifier.fillMaxSize()){

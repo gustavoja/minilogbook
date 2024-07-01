@@ -19,7 +19,7 @@ class BloodGlucoseRepositoryImpl @Inject constructor(private val storageDataSour
     override val bloodGlucoseRecords: Flow<List<BloodGlucoseRecordModel>> =
         storageDataSource.bloodGlucoseRecords
             .map { items -> items.map { BloodGlucoseRecordModel(it.value, it.date) } }
-            .map { it.sortedByDescending { it.date }}
+            .map { items -> items.sortedByDescending { it.date }}
 
     override val bloodGlucoseAverage: Flow<Float> = storageDataSource.bloodGlucoseAverage
 
