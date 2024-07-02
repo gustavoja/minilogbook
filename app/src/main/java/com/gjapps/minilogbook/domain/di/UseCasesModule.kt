@@ -13,6 +13,8 @@ import com.gjapps.minilogbook.domain.usecases.ConvertToCurrentLanguageFormatUseC
 import com.gjapps.minilogbook.domain.usecases.ConvertToCurrentLanguageFormatUseCaseImpl
 import com.gjapps.minilogbook.domain.usecases.DecimalSeparatorForCurrentLocaleUseCase
 import com.gjapps.minilogbook.domain.usecases.DecimalSeparatorForCurrentLocaleUseCaseImpl
+import com.gjapps.minilogbook.domain.usecases.GetBloodGlucoseAverageUseCase
+import com.gjapps.minilogbook.domain.usecases.GetBloodGlucoseAverageUseCaseImpl
 import com.gjapps.minilogbook.domain.usecases.GetLocalisedBloodGlucoseRecordsUseCase
 import com.gjapps.minilogbook.domain.usecases.GetLocalisedBloodGlucoseRecordsUseCaseImpl
 import com.gjapps.minilogbook.domain.usecases.ParseFromCurrentLanguageFormatUseCase
@@ -95,4 +97,11 @@ object UseCasesModule {
         return GetLocalisedBloodGlucoseRecordsUseCaseImpl(bloodGlucoseRecordsRepository,convertToCurrentLanguageDateFormat,convertToCurrentLanguageDecimalFormat,convertBloodGlucoseUnit)
     }
 
+    @ViewModelScoped
+    @Provides
+    fun providesGetBloodGlucoseAverageUseCase( bloodGlucoseRecordsRepository: BloodGlucoseRepository,
+                                               convertToCurrentLanguageDecimalFormat: ConvertToCurrentLanguageFormatUseCase,
+                                               convertBloodGlucoseUnit : ConvertBloodGlucoseUnitUseCase) : GetBloodGlucoseAverageUseCase {
+        return GetBloodGlucoseAverageUseCaseImpl(bloodGlucoseRecordsRepository,convertToCurrentLanguageDecimalFormat,convertBloodGlucoseUnit)
+    }
 }

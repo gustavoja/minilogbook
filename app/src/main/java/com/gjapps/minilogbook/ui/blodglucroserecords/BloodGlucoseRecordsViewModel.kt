@@ -8,6 +8,7 @@ import com.gjapps.minilogbook.data.repositories.BloodGlucoseRepository
 import com.gjapps.minilogbook.domain.usecases.ConvertBloodGlucoseUnitUseCase
 import com.gjapps.minilogbook.domain.usecases.ConvertToCurrentLanguageDateFormatUseCase
 import com.gjapps.minilogbook.domain.usecases.ConvertToCurrentLanguageFormatUseCase
+import com.gjapps.minilogbook.domain.usecases.GetBloodGlucoseAverageUseCase
 import com.gjapps.minilogbook.domain.usecases.GetLocalisedBloodGlucoseRecordsUseCase
 import com.gjapps.minilogbook.domain.usecases.ValidateGlucoseInputUseCase
 import com.gjapps.minilogbook.ui.blodglucroserecords.components.recordslist.uistates.BloodGlucoseRecordsListUIState
@@ -16,7 +17,6 @@ import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
@@ -32,13 +32,14 @@ class BloodGlucoseRecordsViewModel @Inject constructor(private val bloodGlucoseR
                                                        private val convertToCurrentLanguageDecimalFormat: ConvertToCurrentLanguageFormatUseCase,
                                                        private val convertBloodGlucoseUnit : ConvertBloodGlucoseUnitUseCase,
                                                        private val validateGlucoseInput: ValidateGlucoseInputUseCase,
-                                                       private val getLocalisedBloodGlucoseRecords : GetLocalisedBloodGlucoseRecordsUseCase,
+                                                       getLocalisedBloodGlucoseRecords : GetLocalisedBloodGlucoseRecordsUseCase,
+                                                       getBloodGlucoseAverageUseCase: GetBloodGlucoseAverageUseCase
                                                        ) : ViewModel() {
 
     private var bloodGlucoseRecordsListSubscription : Job? = null
     private var bloodGlucoseAverageSubscription : Job? = null
 
-    private val exceptionHandler=CoroutineExceptionHandler { _, exception ->
+    private val exceptionHandler = CoroutineExceptionHandler { _, exception ->
         Log.e(TAG, exception.message, exception)
         _uiState.update {
             it.copy(recordsState = BloodGlucoseRecordsListUIState.Error)
@@ -56,31 +57,16 @@ class BloodGlucoseRecordsViewModel @Inject constructor(private val bloodGlucoseR
         .map {records ->
             if(records.any()) BloodGlucoseRecordsListUIState.WithBloodGlucoseRecords(records) else BloodGlucoseRecordsListUIState.Empty
         }
-        .catch {
-            _uiState.update {
-                it.copy(recordsState = BloodGlucoseRecordsListUIState.Error)
-            }
-        }
         .onEach { recordsListState ->
             _uiState.update {
                 it.copy(recordsState = recordsListState)
             }
         }
 
-    private val bloodGlucoseAverage = bloodGlucoseRecordsRepository
-        .bloodGlucoseAverage
-        .combine(bloodGlucoseRecordsListState){ average, list ->
-            var convertedAverage = ""
-            if(list is BloodGlucoseRecordsListUIState.WithBloodGlucoseRecords) {
-                convertedAverage = convertToCurrentLanguageDecimalFormat(convertBloodGlucoseUnit(average, BloodGlucoseUnit.Mgdl, uiState.value.selectedUnit))
-            }
+    private val bloodGlucoseAverage = getBloodGlucoseAverageUseCase(selectedBloodGlucoseUnitState)
+        .onEach{ average ->
             _uiState.update {
-                it.copy(average = convertedAverage)
-            }
-        }
-        .catch {
-            _uiState.update {
-                it.copy(recordsState = BloodGlucoseRecordsListUIState.Error)
+                it.copy(average = average)
             }
         }
 
