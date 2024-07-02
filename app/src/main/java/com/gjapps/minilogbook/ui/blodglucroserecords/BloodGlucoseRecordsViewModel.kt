@@ -15,12 +15,9 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -48,8 +45,6 @@ class BloodGlucoseRecordsViewModel @Inject constructor(private val bloodGlucoseR
 
     private val _uiState: MutableStateFlow<BloodGlucoseRecordsUiState> = MutableStateFlow(BloodGlucoseRecordsUiState())
     val uiState = _uiState
-        .combine(selectedBloodGlucoseUnitState){ state, unit -> state.copy(selectedUnit = unit) }
-        .stateIn(viewModelScope, SharingStarted.Eagerly, _uiState.value)
 
     private val bloodGlucoseRecordsListState = getLocalisedBloodGlucoseRecords(selectedBloodGlucoseUnitState)
         .map {records ->
@@ -79,6 +74,8 @@ class BloodGlucoseRecordsViewModel @Inject constructor(private val bloodGlucoseR
 
         reloadNewRecordUserInput( selectedBloodGlucoseUnitState.value,selected)
         selectedBloodGlucoseUnitState.value = selected
+
+        _uiState.update {it.copy(selectedUnit =  selectedBloodGlucoseUnitState.value)}
     }
 
     fun onNewRecordValueChanged(newValue: String) {

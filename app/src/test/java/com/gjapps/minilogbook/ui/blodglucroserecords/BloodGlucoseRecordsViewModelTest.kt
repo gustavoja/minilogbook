@@ -319,9 +319,8 @@ class BloodGlucoseRecordsViewModelTest{
             testFlow.value = listOf(BloodGlucoseRecordModel(1f, Date()))
             awaitItem()
             viewModel.onFilterChanged(BloodGlucoseUnit.Mmoldl)
-            val filterSetUiState = awaitItem()
-            val flowRecords = filterSetUiState.recordsState as BloodGlucoseRecordsListUIState.WithBloodGlucoseRecords
-            expectThat(flowRecords.records[0].value).isEqualTo("1")
+            awaitItem()
+            awaitItem()
 
             val recordsTranslate = viewModel.uiState.value.recordsState as BloodGlucoseRecordsListUIState.WithBloodGlucoseRecords
             expectThat(recordsTranslate.records[0].value).isEqualTo("0.0555")
