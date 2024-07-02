@@ -4,7 +4,7 @@ import com.gjapps.minilogbook.data.datasources.storage.local.room.daos.BloodGluc
 import kotlinx.coroutines.flow.Flow
 
 interface StorageDataSource {
-    val bloodGlucoseAverage: Flow<Float>
+    val bloodGlucoseAverage: Flow<Float?>
     val bloodGlucoseRecords: Flow<List<BloodGlucoseRecordEntity>>
     suspend fun saveRecord(record: BloodGlucoseRecordEntity, newAverage:Float, newRecordsSum:Float, newRecordsCount:Int)
     suspend fun getBloodGlucoseRecordsCount():Int

@@ -22,7 +22,7 @@ data class BloodGlucoseRecordsOverviewEntity(
 @Dao
 interface BloodGlucoseRecordsOverviewDao {
     @Query("SELECT * FROM BloodGlucoseRecordsOverviewEntity LIMIT 1;")
-    fun getFirst(): Flow<BloodGlucoseRecordsOverviewEntity>
+    fun getFirst(): Flow<BloodGlucoseRecordsOverviewEntity?>
 
     @Insert
     suspend fun insert(overview: BloodGlucoseRecordsOverviewEntity)

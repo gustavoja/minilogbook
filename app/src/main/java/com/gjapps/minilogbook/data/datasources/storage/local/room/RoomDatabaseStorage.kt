@@ -12,8 +12,8 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 
 class RoomDatabaseStorage(private val bloodGlucoseRecordDao: BloodGlucoseRecordDao, private val bloodGlucoseRecordsOverviewDao: BloodGlucoseRecordsOverviewDao, private val appDatabase: AppDatabase) : StorageDataSource {
-    override val bloodGlucoseAverage: Flow<Float>
-        get() = bloodGlucoseRecordsOverviewDao.getFirst().map { it.recordsAverage }
+    override val bloodGlucoseAverage: Flow<Float?>
+        get() = bloodGlucoseRecordsOverviewDao.getFirst().map { it?.recordsAverage }
     override val bloodGlucoseRecords: Flow<List<BloodGlucoseRecordEntity>>
         get() =  bloodGlucoseRecordDao.getAll()
 
