@@ -6,7 +6,6 @@ import androidx.lifecycle.viewModelScope
 import com.gjapps.minilogbook.data.models.BloodGlucoseUnit
 import com.gjapps.minilogbook.data.repositories.BloodGlucoseRepository
 import com.gjapps.minilogbook.domain.usecases.ConvertBloodGlucoseUnitUseCase
-import com.gjapps.minilogbook.domain.usecases.ConvertToCurrentLanguageDateFormatUseCase
 import com.gjapps.minilogbook.domain.usecases.ConvertToCurrentLanguageFormatUseCase
 import com.gjapps.minilogbook.domain.usecases.GetBloodGlucoseAverageUseCase
 import com.gjapps.minilogbook.domain.usecases.GetLocalisedBloodGlucoseRecordsUseCase
@@ -28,7 +27,6 @@ import javax.inject.Inject
 
 @HiltViewModel
 class BloodGlucoseRecordsViewModel @Inject constructor(private val bloodGlucoseRecordsRepository: BloodGlucoseRepository,
-                                                       private val convertToCurrentLanguageDateFormat: ConvertToCurrentLanguageDateFormatUseCase,
                                                        private val convertToCurrentLanguageDecimalFormat: ConvertToCurrentLanguageFormatUseCase,
                                                        private val convertBloodGlucoseUnit : ConvertBloodGlucoseUnitUseCase,
                                                        private val validateGlucoseInput: ValidateGlucoseInputUseCase,
