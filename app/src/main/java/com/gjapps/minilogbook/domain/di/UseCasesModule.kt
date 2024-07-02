@@ -1,5 +1,6 @@
 package com.gjapps.minilogbook.domain.di
 
+import com.gjapps.minilogbook.data.repositories.BloodGlucoseRepository
 import com.gjapps.minilogbook.domain.usecases.ConvertBloodGlucoseUnitUseCase
 import com.gjapps.minilogbook.domain.usecases.ConvertBloodGlucoseUnitUseCaseUseCaseImpl
 import com.gjapps.minilogbook.domain.usecases.ConvertMgDlToMmollUseCase
@@ -12,6 +13,8 @@ import com.gjapps.minilogbook.domain.usecases.ConvertToCurrentLanguageFormatUseC
 import com.gjapps.minilogbook.domain.usecases.ConvertToCurrentLanguageFormatUseCaseImpl
 import com.gjapps.minilogbook.domain.usecases.DecimalSeparatorForCurrentLocaleUseCase
 import com.gjapps.minilogbook.domain.usecases.DecimalSeparatorForCurrentLocaleUseCaseImpl
+import com.gjapps.minilogbook.domain.usecases.GetLocalisedBloodGlucoseRecordsUseCase
+import com.gjapps.minilogbook.domain.usecases.GetLocalisedBloodGlucoseRecordsUseCaseImpl
 import com.gjapps.minilogbook.domain.usecases.ParseFromCurrentLanguageFormatUseCase
 import com.gjapps.minilogbook.domain.usecases.ParseFromLanguageFormatUseCaseImpl
 import com.gjapps.minilogbook.domain.usecases.SanitizeDecimalNumberUseCase
@@ -82,4 +85,14 @@ object UseCasesModule {
     fun providesDecimalSeparatorForCurrentLocaleUseCase() : DecimalSeparatorForCurrentLocaleUseCase {
         return DecimalSeparatorForCurrentLocaleUseCaseImpl()
     }
+
+    @ViewModelScoped
+    @Provides
+    fun providesGetLocalisedBloodGlucoseRecordsUseCase( bloodGlucoseRecordsRepository: BloodGlucoseRepository,
+                                                        convertToCurrentLanguageDateFormat: ConvertToCurrentLanguageDateFormatUseCase,
+                                                        convertToCurrentLanguageDecimalFormat: ConvertToCurrentLanguageFormatUseCase,
+                                                        convertBloodGlucoseUnit : ConvertBloodGlucoseUnitUseCase) : GetLocalisedBloodGlucoseRecordsUseCase {
+        return GetLocalisedBloodGlucoseRecordsUseCaseImpl(bloodGlucoseRecordsRepository,convertToCurrentLanguageDateFormat,convertToCurrentLanguageDecimalFormat,convertBloodGlucoseUnit)
+    }
+
 }

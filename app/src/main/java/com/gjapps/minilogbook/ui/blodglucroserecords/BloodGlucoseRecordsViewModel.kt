@@ -8,8 +8,8 @@ import com.gjapps.minilogbook.data.repositories.BloodGlucoseRepository
 import com.gjapps.minilogbook.domain.usecases.ConvertBloodGlucoseUnitUseCase
 import com.gjapps.minilogbook.domain.usecases.ConvertToCurrentLanguageDateFormatUseCase
 import com.gjapps.minilogbook.domain.usecases.ConvertToCurrentLanguageFormatUseCase
+import com.gjapps.minilogbook.domain.usecases.GetLocalisedBloodGlucoseRecordsUseCase
 import com.gjapps.minilogbook.domain.usecases.ValidateGlucoseInputUseCase
-import com.gjapps.minilogbook.ui.blodglucroserecords.components.recordslist.uistates.BloodGlucoseRecordItemUIState
 import com.gjapps.minilogbook.ui.blodglucroserecords.components.recordslist.uistates.BloodGlucoseRecordsListUIState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
@@ -19,6 +19,7 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
@@ -27,10 +28,11 @@ import javax.inject.Inject
 
 @HiltViewModel
 class BloodGlucoseRecordsViewModel @Inject constructor(private val bloodGlucoseRecordsRepository: BloodGlucoseRepository,
-                                                       private val convertToCurrentLanguageDateFormatUseCase: ConvertToCurrentLanguageDateFormatUseCase,
+                                                       private val convertToCurrentLanguageDateFormat: ConvertToCurrentLanguageDateFormatUseCase,
                                                        private val convertToCurrentLanguageDecimalFormat: ConvertToCurrentLanguageFormatUseCase,
                                                        private val convertBloodGlucoseUnit : ConvertBloodGlucoseUnitUseCase,
-                                                       private val validateGlucoseInput: ValidateGlucoseInputUseCase
+                                                       private val validateGlucoseInput: ValidateGlucoseInputUseCase,
+                                                       private val getLocalisedBloodGlucoseRecords : GetLocalisedBloodGlucoseRecordsUseCase,
                                                        ) : ViewModel() {
 
     private var bloodGlucoseRecordsListSubscription : Job? = null
@@ -50,25 +52,18 @@ class BloodGlucoseRecordsViewModel @Inject constructor(private val bloodGlucoseR
         .combine(selectedBloodGlucoseUnitState){ state, unit -> state.copy(selectedUnit = unit) }
         .stateIn(viewModelScope, SharingStarted.Eagerly, _uiState.value)
 
-    private val bloodGlucoseRecordsListState = bloodGlucoseRecordsRepository
-        .bloodGlucoseRecords
-        .combine(selectedBloodGlucoseUnitState){ list, _ ->
-            val recordsUIStates = list.map { record -> BloodGlucoseRecordItemUIState(
-                convertToCurrentLanguageDecimalFormat(
-                    convertBloodGlucoseUnit(record.mgdlValue,BloodGlucoseUnit.Mgdl,uiState.value.selectedUnit)
-                ),
-                convertToCurrentLanguageDateFormatUseCase(record.date)) }
-
-            if(list.any()) BloodGlucoseRecordsListUIState.WithBloodGlucoseRecords(recordsUIStates) else BloodGlucoseRecordsListUIState.Empty
+    private val bloodGlucoseRecordsListState = getLocalisedBloodGlucoseRecords(selectedBloodGlucoseUnitState)
+        .map {records ->
+            if(records.any()) BloodGlucoseRecordsListUIState.WithBloodGlucoseRecords(records) else BloodGlucoseRecordsListUIState.Empty
         }
         .catch {
             _uiState.update {
                 it.copy(recordsState = BloodGlucoseRecordsListUIState.Error)
             }
         }
-        .onEach { list ->
+        .onEach { recordsListState ->
             _uiState.update {
-                it.copy(recordsState = list)
+                it.copy(recordsState = recordsListState)
             }
         }
 

@@ -4,12 +4,13 @@ import app.cash.turbine.test
 import com.gjapps.minilogbook.data.models.BloodGlucoseRecordModel
 import com.gjapps.minilogbook.data.models.BloodGlucoseUnit
 import com.gjapps.minilogbook.data.repositories.BloodGlucoseRepository
-import com.gjapps.minilogbook.domain.usecases.ConvertMmollToMgDlUseCaseImpl
 import com.gjapps.minilogbook.domain.usecases.ConvertBloodGlucoseUnitUseCaseUseCaseImpl
 import com.gjapps.minilogbook.domain.usecases.ConvertMgDlToMmollUseCaseImpl
+import com.gjapps.minilogbook.domain.usecases.ConvertMmollToMgDlUseCaseImpl
 import com.gjapps.minilogbook.domain.usecases.ConvertToCurrentLanguageDateFormatUseCaseImpl
 import com.gjapps.minilogbook.domain.usecases.ConvertToCurrentLanguageFormatUseCaseImpl
 import com.gjapps.minilogbook.domain.usecases.DecimalSeparatorForCurrentLocaleUseCase
+import com.gjapps.minilogbook.domain.usecases.GetLocalisedBloodGlucoseRecordsUseCaseImpl
 import com.gjapps.minilogbook.domain.usecases.ParseFromLanguageFormatUseCaseImpl
 import com.gjapps.minilogbook.domain.usecases.SanitizeDecimalNumberUseCaseImpl
 import com.gjapps.minilogbook.domain.usecases.ValidateGlucoseInputUseCaseImpl
@@ -68,7 +69,15 @@ class BloodGlucoseRecordsViewModelTest{
             ),
             ValidateGlucoseInputUseCaseImpl(SanitizeDecimalNumberUseCaseImpl(decimalSeparatorForCurrentLocaleUseCase),
                 decimalSeparatorForCurrentLocaleUseCase
-            )
+            ),
+            GetLocalisedBloodGlucoseRecordsUseCaseImpl(bloodGlucoseRepositoryMock,
+                ConvertToCurrentLanguageDateFormatUseCaseImpl(),
+                ConvertToCurrentLanguageFormatUseCaseImpl(),
+                ConvertBloodGlucoseUnitUseCaseUseCaseImpl(
+                    ConvertMgDlToMmollUseCaseImpl(),
+                    ConvertMmollToMgDlUseCaseImpl(),
+                    ParseFromLanguageFormatUseCaseImpl()
+                ))
         )
     }
 
@@ -179,7 +188,15 @@ class BloodGlucoseRecordsViewModelTest{
                 ConvertMmollToMgDlUseCaseImpl(),
                 ParseFromLanguageFormatUseCaseImpl()
             ),
-            ValidateGlucoseInputUseCaseImpl(SanitizeDecimalNumberUseCaseImpl(decimalSeparatorForCurrentLocaleUseCase),decimalSeparatorForCurrentLocaleUseCase)
+            ValidateGlucoseInputUseCaseImpl(SanitizeDecimalNumberUseCaseImpl(decimalSeparatorForCurrentLocaleUseCase),decimalSeparatorForCurrentLocaleUseCase),
+            GetLocalisedBloodGlucoseRecordsUseCaseImpl(bloodGlucoseRepositoryMock,
+                ConvertToCurrentLanguageDateFormatUseCaseImpl(),
+                ConvertToCurrentLanguageFormatUseCaseImpl(),
+                ConvertBloodGlucoseUnitUseCaseUseCaseImpl(
+                    ConvertMgDlToMmollUseCaseImpl(),
+                    ConvertMmollToMgDlUseCaseImpl(),
+                    ParseFromLanguageFormatUseCaseImpl()
+                ))
         )
 
         //act
@@ -214,7 +231,15 @@ class BloodGlucoseRecordsViewModelTest{
                 ConvertMmollToMgDlUseCaseImpl(),
                 ParseFromLanguageFormatUseCaseImpl()
             ),
-            ValidateGlucoseInputUseCaseImpl(SanitizeDecimalNumberUseCaseImpl(decimalSeparatorForCurrentLocaleUseCase),decimalSeparatorForCurrentLocaleUseCase)
+            ValidateGlucoseInputUseCaseImpl(SanitizeDecimalNumberUseCaseImpl(decimalSeparatorForCurrentLocaleUseCase),decimalSeparatorForCurrentLocaleUseCase),
+            GetLocalisedBloodGlucoseRecordsUseCaseImpl(bloodGlucoseRepositoryMock,
+                ConvertToCurrentLanguageDateFormatUseCaseImpl(),
+                ConvertToCurrentLanguageFormatUseCaseImpl(),
+                ConvertBloodGlucoseUnitUseCaseUseCaseImpl(
+                    ConvertMgDlToMmollUseCaseImpl(),
+                    ConvertMmollToMgDlUseCaseImpl(),
+                    ParseFromLanguageFormatUseCaseImpl()
+                ))
         )
 
         //act
@@ -249,7 +274,15 @@ class BloodGlucoseRecordsViewModelTest{
                 ConvertMmollToMgDlUseCaseImpl(),
                 ParseFromLanguageFormatUseCaseImpl()
             ),
-            ValidateGlucoseInputUseCaseImpl(SanitizeDecimalNumberUseCaseImpl(decimalSeparatorForCurrentLocaleUseCase),decimalSeparatorForCurrentLocaleUseCase)
+            ValidateGlucoseInputUseCaseImpl(SanitizeDecimalNumberUseCaseImpl(decimalSeparatorForCurrentLocaleUseCase),decimalSeparatorForCurrentLocaleUseCase),
+            GetLocalisedBloodGlucoseRecordsUseCaseImpl(bloodGlucoseRepositoryMock,
+                ConvertToCurrentLanguageDateFormatUseCaseImpl(),
+                ConvertToCurrentLanguageFormatUseCaseImpl(),
+                ConvertBloodGlucoseUnitUseCaseUseCaseImpl(
+                    ConvertMgDlToMmollUseCaseImpl(),
+                    ConvertMmollToMgDlUseCaseImpl(),
+                    ParseFromLanguageFormatUseCaseImpl()
+                ))
         )
 
         //act
@@ -289,7 +322,15 @@ class BloodGlucoseRecordsViewModelTest{
                 ConvertMmollToMgDlUseCaseImpl(),
                 ParseFromLanguageFormatUseCaseImpl()
             ),
-            ValidateGlucoseInputUseCaseImpl(SanitizeDecimalNumberUseCaseImpl(decimalSeparatorForCurrentLocaleUseCase),decimalSeparatorForCurrentLocaleUseCase)
+            ValidateGlucoseInputUseCaseImpl(SanitizeDecimalNumberUseCaseImpl(decimalSeparatorForCurrentLocaleUseCase),decimalSeparatorForCurrentLocaleUseCase),
+            GetLocalisedBloodGlucoseRecordsUseCaseImpl(bloodGlucoseRepositoryMock,
+                ConvertToCurrentLanguageDateFormatUseCaseImpl(),
+                ConvertToCurrentLanguageFormatUseCaseImpl(),
+                ConvertBloodGlucoseUnitUseCaseUseCaseImpl(
+                    ConvertMgDlToMmollUseCaseImpl(),
+                    ConvertMmollToMgDlUseCaseImpl(),
+                    ParseFromLanguageFormatUseCaseImpl()
+                ))
         )
 
         //act
