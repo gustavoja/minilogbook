@@ -6,7 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.gjapps.minilogbook.data.models.BloodGlucoseUnit
 import com.gjapps.minilogbook.data.repositories.BloodGlucoseRepository
 import com.gjapps.minilogbook.domain.usecases.ApplyUnitAndLocaliseBloodGlucoseRecordUseCase
-import com.gjapps.minilogbook.domain.usecases.GetBloodGlucoseAverageUseCase
+import com.gjapps.minilogbook.domain.usecases.GetLocalisedBloodGlucoseAverageUseCase
 import com.gjapps.minilogbook.domain.usecases.GetLocalisedBloodGlucoseRecordsUseCase
 import com.gjapps.minilogbook.domain.usecases.SaveRecordUseCase
 import com.gjapps.minilogbook.domain.usecases.ValidateGlucoseInputUseCase
@@ -26,7 +26,7 @@ import javax.inject.Inject
 class BloodGlucoseRecordsViewModel @Inject constructor(private val bloodGlucoseRecordsRepository: BloodGlucoseRepository,
                                                        private val validateGlucoseInput: ValidateGlucoseInputUseCase,
                                                        getLocalisedBloodGlucoseRecords : GetLocalisedBloodGlucoseRecordsUseCase,
-                                                       getBloodGlucoseAverage: GetBloodGlucoseAverageUseCase,
+                                                       getLocalisedBloodGlucoseAverage: GetLocalisedBloodGlucoseAverageUseCase,
                                                        private val saveRecord: SaveRecordUseCase,
                                                        private val applyUnitAndLocaliseBloodGlucoseRecordUseCase: ApplyUnitAndLocaliseBloodGlucoseRecordUseCase
                                                        ) : ViewModel() {
@@ -56,7 +56,7 @@ class BloodGlucoseRecordsViewModel @Inject constructor(private val bloodGlucoseR
             }
         }
 
-    private val bloodGlucoseAverage = getBloodGlucoseAverage(selectedBloodGlucoseUnitState)
+    private val bloodGlucoseAverage = getLocalisedBloodGlucoseAverage(selectedBloodGlucoseUnitState)
         .onEach{ average ->
             _uiState.update {
                 it.copy(average = average)

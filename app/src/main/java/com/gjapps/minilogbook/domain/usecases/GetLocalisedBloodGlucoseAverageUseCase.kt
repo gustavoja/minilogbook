@@ -7,15 +7,15 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import javax.inject.Inject
 
-interface GetBloodGlucoseAverageUseCase {
+interface GetLocalisedBloodGlucoseAverageUseCase {
     operator fun invoke (recordsUnit: StateFlow<BloodGlucoseUnit>): Flow<String>
 }
 
-class GetBloodGlucoseAverageUseCaseImpl @Inject
+class GetLocalisedBloodGlucoseAverageUseCaseImpl @Inject
 constructor(private val bloodGlucoseRecordsRepository: BloodGlucoseRepository,
             private val convertToCurrentLanguageDecimalFormat: ConvertToCurrentLanguageFormatUseCase,
             private val convertBloodGlucoseUnit : ConvertBloodGlucoseUnitUseCase
-):GetBloodGlucoseAverageUseCase {
+):GetLocalisedBloodGlucoseAverageUseCase {
     override fun invoke(recordsUnit: StateFlow<BloodGlucoseUnit>): Flow<String> {
         return bloodGlucoseRecordsRepository
             .bloodGlucoseAverage

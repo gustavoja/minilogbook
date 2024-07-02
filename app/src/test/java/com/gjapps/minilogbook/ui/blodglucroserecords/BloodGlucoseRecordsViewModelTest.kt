@@ -11,7 +11,7 @@ import com.gjapps.minilogbook.domain.usecases.ConvertMmollToMgDlUseCaseImpl
 import com.gjapps.minilogbook.domain.usecases.ConvertToCurrentLanguageDateFormatUseCaseImpl
 import com.gjapps.minilogbook.domain.usecases.ConvertToCurrentLanguageFormatUseCaseImpl
 import com.gjapps.minilogbook.domain.usecases.DecimalSeparatorForCurrentLocaleUseCase
-import com.gjapps.minilogbook.domain.usecases.GetBloodGlucoseAverageUseCaseImpl
+import com.gjapps.minilogbook.domain.usecases.GetLocalisedBloodGlucoseAverageUseCaseImpl
 import com.gjapps.minilogbook.domain.usecases.GetLocalisedBloodGlucoseRecordsUseCaseImpl
 import com.gjapps.minilogbook.domain.usecases.ParseFromLanguageFormatUseCaseImpl
 import com.gjapps.minilogbook.domain.usecases.SanitizeDecimalNumberUseCaseImpl
@@ -78,7 +78,7 @@ class BloodGlucoseRecordsViewModelTest{
                 ConvertToCurrentLanguageDateFormatUseCaseImpl(),
                 ConvertToCurrentLanguageFormatUseCaseImpl(),
                 convertBloodGlucoseUnitUseCaseUseCaseImpl),
-            GetBloodGlucoseAverageUseCaseImpl(bloodGlucoseRepositoryMock,
+            GetLocalisedBloodGlucoseAverageUseCaseImpl(bloodGlucoseRepositoryMock,
                 ConvertToCurrentLanguageFormatUseCaseImpl(),
                 convertBloodGlucoseUnitUseCaseUseCaseImpl),
             SaveRecordUseCaseImpl(bloodGlucoseRepositoryMock,convertBloodGlucoseUnitUseCaseUseCaseImpl),
@@ -201,7 +201,7 @@ class BloodGlucoseRecordsViewModelTest{
                 ConvertToCurrentLanguageDateFormatUseCaseImpl(),
                 ConvertToCurrentLanguageFormatUseCaseImpl(),
                 convertBloodGlucoseUnitUseCaseUseCaseImpl),
-            GetBloodGlucoseAverageUseCaseImpl(bloodGlucoseRepositoryMock,
+            GetLocalisedBloodGlucoseAverageUseCaseImpl(bloodGlucoseRepositoryMock,
                 ConvertToCurrentLanguageFormatUseCaseImpl(),
                 convertBloodGlucoseUnitUseCaseUseCaseImpl),
             SaveRecordUseCaseImpl(bloodGlucoseRepositoryMock,convertBloodGlucoseUnitUseCaseUseCaseImpl),
@@ -247,7 +247,7 @@ class BloodGlucoseRecordsViewModelTest{
                 ConvertToCurrentLanguageDateFormatUseCaseImpl(),
                 ConvertToCurrentLanguageFormatUseCaseImpl(),
                 convertBloodGlucoseUnitUseCaseUseCaseImpl),
-            GetBloodGlucoseAverageUseCaseImpl(bloodGlucoseRepositoryMock,
+            GetLocalisedBloodGlucoseAverageUseCaseImpl(bloodGlucoseRepositoryMock,
                 ConvertToCurrentLanguageFormatUseCaseImpl(),
                 convertBloodGlucoseUnitUseCaseUseCaseImpl),
             SaveRecordUseCaseImpl(bloodGlucoseRepositoryMock,convertBloodGlucoseUnitUseCaseUseCaseImpl),
@@ -293,7 +293,7 @@ class BloodGlucoseRecordsViewModelTest{
                 ConvertToCurrentLanguageDateFormatUseCaseImpl(),
                 ConvertToCurrentLanguageFormatUseCaseImpl(),
                 convertBloodGlucoseUnitUseCaseUseCaseImpl),
-            GetBloodGlucoseAverageUseCaseImpl(bloodGlucoseRepositoryMock,
+            GetLocalisedBloodGlucoseAverageUseCaseImpl(bloodGlucoseRepositoryMock,
                 ConvertToCurrentLanguageFormatUseCaseImpl(),
                 convertBloodGlucoseUnitUseCaseUseCaseImpl),
             SaveRecordUseCaseImpl(bloodGlucoseRepositoryMock,convertBloodGlucoseUnitUseCaseUseCaseImpl),
@@ -343,7 +343,7 @@ class BloodGlucoseRecordsViewModelTest{
                 ConvertToCurrentLanguageDateFormatUseCaseImpl(),
                 ConvertToCurrentLanguageFormatUseCaseImpl(),
                 convertBloodGlucoseUnitUseCaseUseCaseImpl),
-            GetBloodGlucoseAverageUseCaseImpl(bloodGlucoseRepositoryMock,
+            GetLocalisedBloodGlucoseAverageUseCaseImpl(bloodGlucoseRepositoryMock,
                 ConvertToCurrentLanguageFormatUseCaseImpl(),
                 convertBloodGlucoseUnitUseCaseUseCaseImpl),
             SaveRecordUseCaseImpl(bloodGlucoseRepositoryMock,convertBloodGlucoseUnitUseCaseUseCaseImpl),
