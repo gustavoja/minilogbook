@@ -1,6 +1,8 @@
 package com.gjapps.minilogbook.domain.di
 
 import com.gjapps.minilogbook.data.repositories.BloodGlucoseRepository
+import com.gjapps.minilogbook.domain.usecases.ApplyUnitAndLocaliseBloodGlucoseRecordUseCase
+import com.gjapps.minilogbook.domain.usecases.ApplyUnitAndLocaliseBloodGlucoseRecordUseCaseImpl
 import com.gjapps.minilogbook.domain.usecases.ConvertBloodGlucoseUnitUseCase
 import com.gjapps.minilogbook.domain.usecases.ConvertBloodGlucoseUnitUseCaseUseCaseImpl
 import com.gjapps.minilogbook.domain.usecases.ConvertMgDlToMmollUseCase
@@ -112,5 +114,13 @@ object UseCasesModule {
     fun providesSaveRecordUseCase( bloodGlucoseRecordsRepository: BloodGlucoseRepository,
                                                convertBloodGlucoseUnit : ConvertBloodGlucoseUnitUseCase) : SaveRecordUseCase {
         return SaveRecordUseCaseImpl(bloodGlucoseRecordsRepository,convertBloodGlucoseUnit)
+    }
+
+    @ViewModelScoped
+    @Provides
+    fun providesApplyUnitAndLocaliseBloodGlucoseRecordUseCase(
+        convertToCurrentLanguageDecimalFormat: ConvertToCurrentLanguageFormatUseCase,
+        convertBloodGlucoseUnit : ConvertBloodGlucoseUnitUseCase) : ApplyUnitAndLocaliseBloodGlucoseRecordUseCase {
+        return ApplyUnitAndLocaliseBloodGlucoseRecordUseCaseImpl(convertToCurrentLanguageDecimalFormat,convertBloodGlucoseUnit)
     }
 }
