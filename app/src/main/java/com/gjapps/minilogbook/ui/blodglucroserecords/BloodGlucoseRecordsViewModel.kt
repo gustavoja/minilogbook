@@ -9,6 +9,7 @@ import com.gjapps.minilogbook.domain.usecases.ConvertBloodGlucoseUnitUseCase
 import com.gjapps.minilogbook.domain.usecases.ConvertToCurrentLanguageFormatUseCase
 import com.gjapps.minilogbook.domain.usecases.GetBloodGlucoseAverageUseCase
 import com.gjapps.minilogbook.domain.usecases.GetLocalisedBloodGlucoseRecordsUseCase
+import com.gjapps.minilogbook.domain.usecases.SaveRecordUseCase
 import com.gjapps.minilogbook.domain.usecases.ValidateGlucoseInputUseCase
 import com.gjapps.minilogbook.ui.blodglucroserecords.components.recordslist.uistates.BloodGlucoseRecordsListUIState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -28,7 +29,8 @@ class BloodGlucoseRecordsViewModel @Inject constructor(private val bloodGlucoseR
                                                        private val convertBloodGlucoseUnit : ConvertBloodGlucoseUnitUseCase,
                                                        private val validateGlucoseInput: ValidateGlucoseInputUseCase,
                                                        getLocalisedBloodGlucoseRecords : GetLocalisedBloodGlucoseRecordsUseCase,
-                                                       getBloodGlucoseAverageUseCase: GetBloodGlucoseAverageUseCase
+                                                       getBloodGlucoseAverage: GetBloodGlucoseAverageUseCase,
+                                                       private val saveRecord: SaveRecordUseCase
                                                        ) : ViewModel() {
 
     private var bloodGlucoseRecordsListSubscription : Job? = null
@@ -56,7 +58,7 @@ class BloodGlucoseRecordsViewModel @Inject constructor(private val bloodGlucoseR
             }
         }
 
-    private val bloodGlucoseAverage = getBloodGlucoseAverageUseCase(selectedBloodGlucoseUnitState)
+    private val bloodGlucoseAverage = getBloodGlucoseAverage(selectedBloodGlucoseUnitState)
         .onEach{ average ->
             _uiState.update {
                 it.copy(average = average)
@@ -91,9 +93,11 @@ class BloodGlucoseRecordsViewModel @Inject constructor(private val bloodGlucoseR
         if(newRecord.isEmpty() || !uiState.value.isValidNewRecordInput)
             return
 
-        saveRecord(newRecord)
-        _uiState.update {
-            it.copy(newRecordUserInputValue = "",isValidNewRecordInput = false)
+        viewModelScope.launch(exceptionHandler) {
+            saveRecord(newRecord,selectedBloodGlucoseUnitState.value)
+            _uiState.update {
+                it.copy(newRecordUserInputValue = "",isValidNewRecordInput = false)
+            }
         }
     }
 
@@ -117,14 +121,6 @@ class BloodGlucoseRecordsViewModel @Inject constructor(private val bloodGlucoseR
         bloodGlucoseAverageSubscription?.cancel()
         bloodGlucoseAverageSubscription = viewModelScope.launch(exceptionHandler) {
             bloodGlucoseAverage.collect()
-        }
-    }
-
-    private fun saveRecord(value: String)
-    {
-        viewModelScope.launch(exceptionHandler) {
-            val convertedValue = convertBloodGlucoseUnit(value,uiState.value.selectedUnit,BloodGlucoseUnit.Mgdl)
-            bloodGlucoseRecordsRepository.saveRecord(convertedValue)
         }
     }
 

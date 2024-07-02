@@ -14,6 +14,7 @@ import com.gjapps.minilogbook.domain.usecases.GetBloodGlucoseAverageUseCaseImpl
 import com.gjapps.minilogbook.domain.usecases.GetLocalisedBloodGlucoseRecordsUseCaseImpl
 import com.gjapps.minilogbook.domain.usecases.ParseFromLanguageFormatUseCaseImpl
 import com.gjapps.minilogbook.domain.usecases.SanitizeDecimalNumberUseCaseImpl
+import com.gjapps.minilogbook.domain.usecases.SaveRecordUseCaseImpl
 import com.gjapps.minilogbook.domain.usecases.ValidateGlucoseInputUseCaseImpl
 import com.gjapps.minilogbook.ui.blodglucroserecords.components.recordslist.uistates.BloodGlucoseRecordsListUIState
 import kotlinx.coroutines.Dispatchers
@@ -59,32 +60,26 @@ class BloodGlucoseRecordsViewModelTest{
             on { invoke() } doReturn '.' // Customize the decimal separator as needed
         }
 
+        val convertBloodGlucoseUnitUseCaseUseCaseImpl =  ConvertBloodGlucoseUnitUseCaseUseCaseImpl(
+        ConvertMgDlToMmollUseCaseImpl(),
+        ConvertMmollToMgDlUseCaseImpl(),
+        ParseFromLanguageFormatUseCaseImpl()
+        )
         viewModel = BloodGlucoseRecordsViewModel(
             bloodGlucoseRepositoryMock,
             ConvertToCurrentLanguageFormatUseCaseImpl(),
-            ConvertBloodGlucoseUnitUseCaseUseCaseImpl(
-                ConvertMgDlToMmollUseCaseImpl(),
-                ConvertMmollToMgDlUseCaseImpl(),
-                ParseFromLanguageFormatUseCaseImpl()
-            ),
+            convertBloodGlucoseUnitUseCaseUseCaseImpl,
             ValidateGlucoseInputUseCaseImpl(SanitizeDecimalNumberUseCaseImpl(decimalSeparatorForCurrentLocaleUseCase),
                 decimalSeparatorForCurrentLocaleUseCase
             ),
             GetLocalisedBloodGlucoseRecordsUseCaseImpl(bloodGlucoseRepositoryMock,
                 ConvertToCurrentLanguageDateFormatUseCaseImpl(),
                 ConvertToCurrentLanguageFormatUseCaseImpl(),
-                ConvertBloodGlucoseUnitUseCaseUseCaseImpl(
-                    ConvertMgDlToMmollUseCaseImpl(),
-                    ConvertMmollToMgDlUseCaseImpl(),
-                    ParseFromLanguageFormatUseCaseImpl()
-                )),
+                convertBloodGlucoseUnitUseCaseUseCaseImpl),
             GetBloodGlucoseAverageUseCaseImpl(bloodGlucoseRepositoryMock,
                 ConvertToCurrentLanguageFormatUseCaseImpl(),
-                ConvertBloodGlucoseUnitUseCaseUseCaseImpl(
-                    ConvertMgDlToMmollUseCaseImpl(),
-                    ConvertMmollToMgDlUseCaseImpl(),
-                    ParseFromLanguageFormatUseCaseImpl()
-                ))
+                convertBloodGlucoseUnitUseCaseUseCaseImpl),
+            SaveRecordUseCaseImpl(bloodGlucoseRepositoryMock,convertBloodGlucoseUnitUseCaseUseCaseImpl)
         )
     }
 
@@ -186,30 +181,26 @@ class BloodGlucoseRecordsViewModelTest{
             on { invoke() } doReturn '.'
         }
 
+        val convertBloodGlucoseUnitUseCaseUseCaseImpl =  ConvertBloodGlucoseUnitUseCaseUseCaseImpl(
+            ConvertMgDlToMmollUseCaseImpl(),
+            ConvertMmollToMgDlUseCaseImpl(),
+            ParseFromLanguageFormatUseCaseImpl()
+        )
         viewModel = BloodGlucoseRecordsViewModel(
             bloodGlucoseRepositoryMock,
             ConvertToCurrentLanguageFormatUseCaseImpl(),
-            ConvertBloodGlucoseUnitUseCaseUseCaseImpl(
-                ConvertMgDlToMmollUseCaseImpl(),
-                ConvertMmollToMgDlUseCaseImpl(),
-                ParseFromLanguageFormatUseCaseImpl()
+            convertBloodGlucoseUnitUseCaseUseCaseImpl,
+            ValidateGlucoseInputUseCaseImpl(SanitizeDecimalNumberUseCaseImpl(decimalSeparatorForCurrentLocaleUseCase),
+                decimalSeparatorForCurrentLocaleUseCase
             ),
-            ValidateGlucoseInputUseCaseImpl(SanitizeDecimalNumberUseCaseImpl(decimalSeparatorForCurrentLocaleUseCase),decimalSeparatorForCurrentLocaleUseCase),
             GetLocalisedBloodGlucoseRecordsUseCaseImpl(bloodGlucoseRepositoryMock,
                 ConvertToCurrentLanguageDateFormatUseCaseImpl(),
                 ConvertToCurrentLanguageFormatUseCaseImpl(),
-                ConvertBloodGlucoseUnitUseCaseUseCaseImpl(
-                    ConvertMgDlToMmollUseCaseImpl(),
-                    ConvertMmollToMgDlUseCaseImpl(),
-                    ParseFromLanguageFormatUseCaseImpl()
-                )),
+                convertBloodGlucoseUnitUseCaseUseCaseImpl),
             GetBloodGlucoseAverageUseCaseImpl(bloodGlucoseRepositoryMock,
                 ConvertToCurrentLanguageFormatUseCaseImpl(),
-                ConvertBloodGlucoseUnitUseCaseUseCaseImpl(
-                    ConvertMgDlToMmollUseCaseImpl(),
-                    ConvertMmollToMgDlUseCaseImpl(),
-                    ParseFromLanguageFormatUseCaseImpl()
-                ))
+                convertBloodGlucoseUnitUseCaseUseCaseImpl),
+            SaveRecordUseCaseImpl(bloodGlucoseRepositoryMock,convertBloodGlucoseUnitUseCaseUseCaseImpl)
         )
 
         //act
@@ -235,30 +226,26 @@ class BloodGlucoseRecordsViewModelTest{
         val bloodGlucoseAverageFlowMock = mock<Flow<Float>>()
         `when`(bloodGlucoseRepositoryMock.bloodGlucoseAverage).thenReturn(bloodGlucoseAverageFlowMock)
 
-        val viewModel = BloodGlucoseRecordsViewModel(
+        val convertBloodGlucoseUnitUseCaseUseCaseImpl =  ConvertBloodGlucoseUnitUseCaseUseCaseImpl(
+            ConvertMgDlToMmollUseCaseImpl(),
+            ConvertMmollToMgDlUseCaseImpl(),
+            ParseFromLanguageFormatUseCaseImpl()
+        )
+        viewModel = BloodGlucoseRecordsViewModel(
             bloodGlucoseRepositoryMock,
             ConvertToCurrentLanguageFormatUseCaseImpl(),
-            ConvertBloodGlucoseUnitUseCaseUseCaseImpl(
-                ConvertMgDlToMmollUseCaseImpl(),
-                ConvertMmollToMgDlUseCaseImpl(),
-                ParseFromLanguageFormatUseCaseImpl()
+            convertBloodGlucoseUnitUseCaseUseCaseImpl,
+            ValidateGlucoseInputUseCaseImpl(SanitizeDecimalNumberUseCaseImpl(decimalSeparatorForCurrentLocaleUseCase),
+                decimalSeparatorForCurrentLocaleUseCase
             ),
-            ValidateGlucoseInputUseCaseImpl(SanitizeDecimalNumberUseCaseImpl(decimalSeparatorForCurrentLocaleUseCase),decimalSeparatorForCurrentLocaleUseCase),
             GetLocalisedBloodGlucoseRecordsUseCaseImpl(bloodGlucoseRepositoryMock,
                 ConvertToCurrentLanguageDateFormatUseCaseImpl(),
                 ConvertToCurrentLanguageFormatUseCaseImpl(),
-                ConvertBloodGlucoseUnitUseCaseUseCaseImpl(
-                    ConvertMgDlToMmollUseCaseImpl(),
-                    ConvertMmollToMgDlUseCaseImpl(),
-                    ParseFromLanguageFormatUseCaseImpl()
-                )),
+                convertBloodGlucoseUnitUseCaseUseCaseImpl),
             GetBloodGlucoseAverageUseCaseImpl(bloodGlucoseRepositoryMock,
                 ConvertToCurrentLanguageFormatUseCaseImpl(),
-                ConvertBloodGlucoseUnitUseCaseUseCaseImpl(
-                    ConvertMgDlToMmollUseCaseImpl(),
-                    ConvertMmollToMgDlUseCaseImpl(),
-                    ParseFromLanguageFormatUseCaseImpl()
-                ))
+                convertBloodGlucoseUnitUseCaseUseCaseImpl),
+            SaveRecordUseCaseImpl(bloodGlucoseRepositoryMock,convertBloodGlucoseUnitUseCaseUseCaseImpl)
         )
 
         //act
@@ -284,30 +271,26 @@ class BloodGlucoseRecordsViewModelTest{
         val bloodGlucoseAverageFlowMock = mock<Flow<Float>>()
         `when`(bloodGlucoseRepositoryMock.bloodGlucoseAverage).thenReturn(bloodGlucoseAverageFlowMock)
 
-        val viewModel = BloodGlucoseRecordsViewModel(
+        val convertBloodGlucoseUnitUseCaseUseCaseImpl =  ConvertBloodGlucoseUnitUseCaseUseCaseImpl(
+            ConvertMgDlToMmollUseCaseImpl(),
+            ConvertMmollToMgDlUseCaseImpl(),
+            ParseFromLanguageFormatUseCaseImpl()
+        )
+        viewModel = BloodGlucoseRecordsViewModel(
             bloodGlucoseRepositoryMock,
             ConvertToCurrentLanguageFormatUseCaseImpl(),
-            ConvertBloodGlucoseUnitUseCaseUseCaseImpl(
-                ConvertMgDlToMmollUseCaseImpl(),
-                ConvertMmollToMgDlUseCaseImpl(),
-                ParseFromLanguageFormatUseCaseImpl()
+            convertBloodGlucoseUnitUseCaseUseCaseImpl,
+            ValidateGlucoseInputUseCaseImpl(SanitizeDecimalNumberUseCaseImpl(decimalSeparatorForCurrentLocaleUseCase),
+                decimalSeparatorForCurrentLocaleUseCase
             ),
-            ValidateGlucoseInputUseCaseImpl(SanitizeDecimalNumberUseCaseImpl(decimalSeparatorForCurrentLocaleUseCase),decimalSeparatorForCurrentLocaleUseCase),
             GetLocalisedBloodGlucoseRecordsUseCaseImpl(bloodGlucoseRepositoryMock,
                 ConvertToCurrentLanguageDateFormatUseCaseImpl(),
                 ConvertToCurrentLanguageFormatUseCaseImpl(),
-                ConvertBloodGlucoseUnitUseCaseUseCaseImpl(
-                    ConvertMgDlToMmollUseCaseImpl(),
-                    ConvertMmollToMgDlUseCaseImpl(),
-                    ParseFromLanguageFormatUseCaseImpl()
-                )),
+                convertBloodGlucoseUnitUseCaseUseCaseImpl),
             GetBloodGlucoseAverageUseCaseImpl(bloodGlucoseRepositoryMock,
                 ConvertToCurrentLanguageFormatUseCaseImpl(),
-                ConvertBloodGlucoseUnitUseCaseUseCaseImpl(
-                    ConvertMgDlToMmollUseCaseImpl(),
-                    ConvertMmollToMgDlUseCaseImpl(),
-                    ParseFromLanguageFormatUseCaseImpl()
-                ))
+                convertBloodGlucoseUnitUseCaseUseCaseImpl),
+            SaveRecordUseCaseImpl(bloodGlucoseRepositoryMock,convertBloodGlucoseUnitUseCaseUseCaseImpl)
         )
 
         //act
@@ -337,30 +320,26 @@ class BloodGlucoseRecordsViewModelTest{
         val bloodGlucoseAverageFlowMock = MutableStateFlow(0f)
         `when`(bloodGlucoseRepositoryMock.bloodGlucoseAverage).thenReturn(bloodGlucoseAverageFlowMock)
 
-        val viewModel = BloodGlucoseRecordsViewModel(
+        val convertBloodGlucoseUnitUseCaseUseCaseImpl =  ConvertBloodGlucoseUnitUseCaseUseCaseImpl(
+            ConvertMgDlToMmollUseCaseImpl(),
+            ConvertMmollToMgDlUseCaseImpl(),
+            ParseFromLanguageFormatUseCaseImpl()
+        )
+        viewModel = BloodGlucoseRecordsViewModel(
             bloodGlucoseRepositoryMock,
             ConvertToCurrentLanguageFormatUseCaseImpl(),
-            ConvertBloodGlucoseUnitUseCaseUseCaseImpl(
-                ConvertMgDlToMmollUseCaseImpl(),
-                ConvertMmollToMgDlUseCaseImpl(),
-                ParseFromLanguageFormatUseCaseImpl()
+            convertBloodGlucoseUnitUseCaseUseCaseImpl,
+            ValidateGlucoseInputUseCaseImpl(SanitizeDecimalNumberUseCaseImpl(decimalSeparatorForCurrentLocaleUseCase),
+                decimalSeparatorForCurrentLocaleUseCase
             ),
-            ValidateGlucoseInputUseCaseImpl(SanitizeDecimalNumberUseCaseImpl(decimalSeparatorForCurrentLocaleUseCase),decimalSeparatorForCurrentLocaleUseCase),
             GetLocalisedBloodGlucoseRecordsUseCaseImpl(bloodGlucoseRepositoryMock,
                 ConvertToCurrentLanguageDateFormatUseCaseImpl(),
                 ConvertToCurrentLanguageFormatUseCaseImpl(),
-                ConvertBloodGlucoseUnitUseCaseUseCaseImpl(
-                    ConvertMgDlToMmollUseCaseImpl(),
-                    ConvertMmollToMgDlUseCaseImpl(),
-                    ParseFromLanguageFormatUseCaseImpl()
-                )),
+                convertBloodGlucoseUnitUseCaseUseCaseImpl),
             GetBloodGlucoseAverageUseCaseImpl(bloodGlucoseRepositoryMock,
                 ConvertToCurrentLanguageFormatUseCaseImpl(),
-                ConvertBloodGlucoseUnitUseCaseUseCaseImpl(
-                    ConvertMgDlToMmollUseCaseImpl(),
-                    ConvertMmollToMgDlUseCaseImpl(),
-                    ParseFromLanguageFormatUseCaseImpl()
-                ))
+                convertBloodGlucoseUnitUseCaseUseCaseImpl),
+            SaveRecordUseCaseImpl(bloodGlucoseRepositoryMock,convertBloodGlucoseUnitUseCaseUseCaseImpl)
         )
 
         //act

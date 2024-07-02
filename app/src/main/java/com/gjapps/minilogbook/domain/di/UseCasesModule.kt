@@ -21,6 +21,8 @@ import com.gjapps.minilogbook.domain.usecases.ParseFromCurrentLanguageFormatUseC
 import com.gjapps.minilogbook.domain.usecases.ParseFromLanguageFormatUseCaseImpl
 import com.gjapps.minilogbook.domain.usecases.SanitizeDecimalNumberUseCase
 import com.gjapps.minilogbook.domain.usecases.SanitizeDecimalNumberUseCaseImpl
+import com.gjapps.minilogbook.domain.usecases.SaveRecordUseCase
+import com.gjapps.minilogbook.domain.usecases.SaveRecordUseCaseImpl
 import com.gjapps.minilogbook.domain.usecases.ValidateGlucoseInputUseCase
 import com.gjapps.minilogbook.domain.usecases.ValidateGlucoseInputUseCaseImpl
 import dagger.Module
@@ -103,5 +105,12 @@ object UseCasesModule {
                                                convertToCurrentLanguageDecimalFormat: ConvertToCurrentLanguageFormatUseCase,
                                                convertBloodGlucoseUnit : ConvertBloodGlucoseUnitUseCase) : GetBloodGlucoseAverageUseCase {
         return GetBloodGlucoseAverageUseCaseImpl(bloodGlucoseRecordsRepository,convertToCurrentLanguageDecimalFormat,convertBloodGlucoseUnit)
+    }
+
+    @ViewModelScoped
+    @Provides
+    fun providesSaveRecordUseCase( bloodGlucoseRecordsRepository: BloodGlucoseRepository,
+                                               convertBloodGlucoseUnit : ConvertBloodGlucoseUnitUseCase) : SaveRecordUseCase {
+        return SaveRecordUseCaseImpl(bloodGlucoseRecordsRepository,convertBloodGlucoseUnit)
     }
 }
